@@ -1,0 +1,34 @@
+.head{
+    height: 90px;
+    background-color: #080a52;
+    display: flex;
+}
+.admin  {
+    margin: auto;
+}
+.link{
+    text-decoration: none;
+    color: aliceblue;
+    font-size: 20px;
+    margin: auto 0;
+    padding: 20px;
+}
+.link:hover{
+    color: #eb2188;
+}
+
+.user-list{
+    max-width: 70%;
+    margin: 15px auto;
+}
+.search{
+    margin: 25px auto 0;
+    max-width: 400px;
+    display: flex;
+}
+.card{
+    margin: 20px auto ;
+}
+.link-danger{
+    text-decoration: none;
+}

@@ -1,0 +1,39 @@
+.head{
+    height: 90px;
+    background-color: #080a52;
+    display: flex;
+    justify-content: space-between;
+}
+.user{
+    margin: auto 0;
+}
+.link{
+    text-decoration: none;
+    color: aliceblue;
+    font-size: 20px;
+    margin: auto 0;
+    padding: 20px;
+}
+.link:hover{
+    color: #eb2188;
+}
+.form{
+    max-width: 700px;
+    margin: 0 auto;
+}
+.row{
+    margin-top: 20px;
+}
+.col-form-label{
+    font-weight: 500;
+}
+.form-control{
+    border: none;
+    border-bottom: 1px solid ;
+    border-radius: 0%;
+    padding-bottom: 5px;
+}
+.form-control:hover{
+    color: #eb2188;
+
+}

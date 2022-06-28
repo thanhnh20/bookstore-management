@@ -1,0 +1,25 @@
+body{
+    background-color: #f5f5f5;
+}
+.form-signin {
+    max-width: 500px;
+    margin: 8% 40%;
+}  
+.form-floating{
+    margin-top: 5px;
+}
+.btn{
+    margin-top: 10px;
+
+}
+.form-check{
+    margin-top: 13px;
+}
+.image{
+    width: 100px;
+    height: 100px;
+}
+.error{
+    font-size: 13px;
+    margin-top: 3px;
+}
