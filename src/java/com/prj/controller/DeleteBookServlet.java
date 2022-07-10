@@ -5,27 +5,27 @@
  */
 package com.prj.controller;
 
+import com.prj.tblbook.TblBookDAO;
+import com.prj.tblbook.TblBookDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author ASUS
+ * @author Admin
  */
-public class DispatchController extends HttpServlet {
-    private final String START_UP_CONTROLLER = "StartUpServlet";
-    private final String LOGIN_CONTROLLER = "LoginServlet";
-    private final String LOGOUT_CONTROLLER = "LogoutServlet";
-    private final String SEARCH_BOOK_CONTROLLER = "SearchBookServlet";
-    private final String DELETE_BOOK_CONTROLLER = "DeleteBookServlet";
-    private final String UPDATE_BOOK_CONTROLLER = "UpdateBookServlet";
-    private final String SIGNUP_BOOK_CONTROLLER = "SignUpBookServlet";
-    private final String SHOW_ALL_BOOK_CONTROLLER = "ShowAllBookServlet";
+@WebServlet(name = "DeleteBookServlet", urlPatterns = {"/DeleteBookServlet"})
+public class DeleteBookServlet extends HttpServlet {
+    
+    private static final String ERROR = "SearchBookServlet";
+    private static final String SUCCESS = "SearchBookServlet";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,31 +38,20 @@ public class DispatchController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-        String url = "";
-        String action = request.getParameter("btnAction");
-        try{
-            if(action == null){
-                url = START_UP_CONTROLLER;
-            }else if("Login".equals(action)){
-                url = LOGIN_CONTROLLER;
-            }else if("Logout".equals(action)){
-                url = LOGOUT_CONTROLLER;
-            }else if("SearchBook".equals(action)){
-                url = SEARCH_BOOK_CONTROLLER;
-            }else if("DeleteBook".equals(action)){
-                url = DELETE_BOOK_CONTROLLER;
-            }else if("Update Book".equals(action)){ //Update button of Book 
-                url = UPDATE_BOOK_CONTROLLER;
-            }else if("SignUpBook".equals(action)){ 
-                url = SIGNUP_BOOK_CONTROLLER;
-            }else if("ShowAllBook".equals(action)){ 
-                url = SHOW_ALL_BOOK_CONTROLLER;
-            }
-        }finally{
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
+        String url = ERROR;
+        try {
+            String bookID = request.getParameter("txtBookID");
+            TblBookDAO dao = new TblBookDAO();
+            boolean checkBook = dao.updateStatusBook(bookID);
+            if(checkBook){
+                url = SUCCESS;
+            }  
+        } catch (Exception e) {
+            log("Error at Delete Book Sevlet : " + e.toString());
+        } finally {
+            request.getRequestDispatcher(url).forward(request, response);
         }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

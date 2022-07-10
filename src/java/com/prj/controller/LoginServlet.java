@@ -26,7 +26,10 @@ import javax.servlet.http.HttpSession;
  */
 public class LoginServlet extends HttpServlet {
     private final String LOGIN_PAGE = "login.jsp";
-    private final String ADMIN_PAGE = "admin.jsp";
+//    private final String ADMIN_PAGE = "admin.jsp";
+    
+    private final String ADMIN_MANAGE_LIST_BOOK_PAGE = "adminListBook.html";
+
     private final String USER_PAGE = "user.jsp";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -80,7 +83,7 @@ public class LoginServlet extends HttpServlet {
                     if (accountDTO.isRole()) {
                         HttpSession session = request.getSession();
                         session.setAttribute("ADMIN_ROLE", accountDTO);
-                        url = ADMIN_PAGE;
+                        url = ADMIN_MANAGE_LIST_BOOK_PAGE;
                         response.sendRedirect(url);
                     } else {
                         HttpSession session = request.getSession();

@@ -1,3 +1,5 @@
+<%@page import="com.prj.tblbook.TblBookError"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,55 +37,63 @@
                 List Book
             </a>
         </div>
-
+        <%
+            TblBookError bookError = (TblBookError) request.getAttribute("BOOK_ERROR");
+            if (bookError == null) {
+                bookError = new TblBookError();
+            }
+        %>
         <form class="form" action="DispatchController" method="POST">
+            <c:set var="error" value="${requestScope.BOOK_ERROR}"/>
             <div class="form-floating">
-                <input type="text" name="txtBookID" required="" class="form-control" id="formInputName" placeholder="input">
-                <label for="formInputBookID">*Book ID ([1..10] characters)</label>
+                <input type="text" name="txtBookID" value="${param.txtBookID}" required="" class="form-control" id="formInputName" placeholder="input">
+                <label for="formInputBookID">*Book ID [1..10] characters</label>
             </div>
             <div class="error text-danger text-left">
-                Error
+                Error : <%= bookError.getBookIDError()%>
             </div>
 
             <div class="form-floating">
-                <input type="text" name="txtBookName" required="" class="form-control" id="formInputName" placeholder="input">
+                <input type="text" name="txtBookName" value="${param.txtBookName}" required="" class="form-control" id="formInputName" placeholder="input">
                 <label for="formInputName">*Name Book [1..50] characters !</label>
             </div>
             <div class="error text-danger text-left">
-                Error
+                Error : <%= bookError.getBookNameError()%>
             </div>
-
             <div class="form-floating">
-                <input type="text" name="txtQuantity" required="" class="form-control" id="formInputQuantity" placeholder="input">
+                <input type="text" name="txtQuantity" value="${param.txtQuantity}" required="" class="form-control" id="formInputQuantity" placeholder="input">
                 <label for="formInputQuantity">*Quantity >= 0</label>
             </div>
             <div class="error text-danger text-left">
-                Error
+                Error : <%= bookError.getQuantityError()%>
             </div>
 
             <div class="form-floating">
-                <input type="text" name="txtPrice" required="" class="form-control" id="formInputPrice" placeholder="input">
+                <input type="text" name="txtPrice" value="${param.txtPrice}" required="" class="form-control" id="formInputPrice" placeholder="input">
                 <label for="formInputPrice">*Price must be > 0</label>
             </div>
             <div class="error text-danger text-left">
-                Error
+                Error : <%= bookError.getPriceError()%>
             </div>
 
             <div class="form-floating">
-                <input type="text" name="txtImagePath" required="" class="form-control" id="formInputPrice" placeholder="input">
+                <input type="text" name="txtImagePath" value="${param.txtImagePath}" required="" class="form-control" id="formInputPrice" placeholder="input">
                 <label for="formInputImagePath">*Image path [1..300] characters !</label>
             </div>
             <div class="error text-danger text-left">
-                Error
+                Error : <%= bookError.getImagePathError()%>
             </div>
 
             <button class="btn btn-outline-primary" type="submit" value="SignUpBook" name="btnAction">
                 Add new book
             </button>
-            
-<!--            <button class="btn btn-outline-primary" type="reset" value="Reset">
-                Reset
-            </button>-->
+
+            <!--            <button class="btn btn-outline-primary" type="reset" value="Reset">
+                            Reset
+                        </button>-->
             <input class="btn btn-outline-primary" type="reset" value="Reset">
+            <div class="error text-danger text-left">
+                Error :<%= bookError.getMessageError()%>
+            </div>
         </form>
     </body>
