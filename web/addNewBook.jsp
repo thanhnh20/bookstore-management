@@ -88,9 +88,6 @@
                 Add new book
             </button>
 
-            <!--            <button class="btn btn-outline-primary" type="reset" value="Reset">
-                            Reset
-                        </button>-->
             <input class="btn btn-outline-primary" type="reset" value="Reset">
             <div class="error text-danger text-left">
                 Error :<%= bookError.getMessageError()%>

@@ -63,12 +63,10 @@ public class SignUpBookServlet extends HttpServlet {
             }
             if (quantity < 0) {
                 check = false;
-                //bookError.setQuantityError(Integer.parseInt("Quantity must be >= 0 !"));
                 bookError.setQuantityError("Quantity must be >= 0 !");
             }
             if (price <= 0) {
                 check = false;
-                //bookError.setPriceError(Double.parseDouble("Price must be > 0"));
                 bookError.setPriceError("Price must be > 0 !");
             }
             if (check) {
@@ -84,7 +82,6 @@ public class SignUpBookServlet extends HttpServlet {
                         url = SUCCESS;
                     } else {
                         bookError.setMessageError("Can not Create New Book !");
-                        //request.setAttribute("BOOK_ERROR", bookError);
                     }
                 }
             } else {

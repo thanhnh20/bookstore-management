@@ -21,8 +21,15 @@ import javax.naming.NamingException;
  */
 public class TblBookDAO implements Serializable {
 
+    private static final String SEARCH_BOOK_BY_NAME = " Select bookID, bookName, imagePath, quantity, price, status From tblBook Where bookName like ?";
+    private static final String UPDATE_STATUS_BOOK = " Update tblBook Set status = 0 Where bookID = ?";
+    private static final String UPDATE_BOOK = " Update tblBook Set bookName = ?, imagePath = ?, quantity = ?, price = ? Where bookID = ?";
+    private static final String CHECK_DUPLICATE_BOOKID = " Select bookID From tblBook Where bookID = ?";
+    private static final String INSERT_BOOK = " Insert Into tblBook(bookID, bookName, imagePath, quantity, price, status) Values (?,?,?,?,?,?)";
+    private static final String SHOW_ALL_BOOK_BY_NAME = " Select bookID, bookName, imagePath, quantity, price, status From tblBook ";
+
     public List<TblBookDTO> searchBookByName(String searchBookName)
-            throws SQLException {
+            throws SQLException, NamingException {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -30,10 +37,7 @@ public class TblBookDAO implements Serializable {
         try {
             con = DBHepler.makeConnection();
             if (con != null) {
-                String sql = " Select bookID, bookName, imagePath, quantity, price, status "
-                        + " From tblBook "
-                        + " Where bookName like ?";
-                stm = con.prepareStatement(sql);
+                stm = con.prepareStatement(SEARCH_BOOK_BY_NAME);
                 stm.setString(1, "%" + searchBookName + "%");
                 rs = stm.executeQuery();
                 while (rs.next()) {
@@ -48,8 +52,6 @@ public class TblBookDAO implements Serializable {
                     }
                 }
             }
-
-        } catch (Exception e) {
         } finally {
             if (rs != null) {
                 rs.close();
@@ -73,10 +75,7 @@ public class TblBookDAO implements Serializable {
         try {
             con = DBHepler.makeConnection();
             if (con != null) {
-                String sql = "Update tblBook "
-                        + " Set status = 0 "
-                        + " Where bookID = ?";
-                stm = con.prepareStatement(sql);
+                stm = con.prepareStatement(UPDATE_STATUS_BOOK);
                 stm.setString(1, bookID);
                 check = stm.executeUpdate() > 0;
             }
@@ -91,17 +90,15 @@ public class TblBookDAO implements Serializable {
         return check;
     }
 
-    public boolean updateBook(TblBookDTO dtoBook) throws SQLException {
+    public boolean updateBook(TblBookDTO dtoBook) 
+            throws SQLException, NamingException {
         boolean check = false;
         Connection con = null;
         PreparedStatement stm = null;
         try {
             con = DBHepler.makeConnection();
             if (con != null) {
-                String sql = "Update tblBook "
-                        + " Set bookName = ?, imagePath = ?, quantity = ?, price = ?"
-                        + " Where bookID = ?";
-                stm = con.prepareStatement(sql);
+                stm = con.prepareStatement(UPDATE_BOOK);
                 stm.setString(1, dtoBook.getBookName());
                 stm.setString(2, dtoBook.getImagePath());
                 stm.setInt(3, dtoBook.getQuantity());
@@ -109,8 +106,6 @@ public class TblBookDAO implements Serializable {
                 stm.setString(5, dtoBook.getBookID());
                 check = stm.executeUpdate() > 0;
             }
-
-        } catch (Exception e) {
         } finally {
             if (stm != null) {
                 stm.close();
@@ -123,7 +118,7 @@ public class TblBookDAO implements Serializable {
     }
 
     public boolean checkDuplicate(String bookID)
-            throws SQLException {
+            throws SQLException, NamingException {
         boolean check = false;
         Connection con = null;
         PreparedStatement stm = null;
@@ -131,17 +126,13 @@ public class TblBookDAO implements Serializable {
         try {
             con = DBHepler.makeConnection();
             if (con != null) {
-                String sql = "Select bookID "
-                        + " From tblBook "
-                        + " Where bookID = ?";
-                stm = con.prepareStatement(sql);
+                stm = con.prepareStatement(CHECK_DUPLICATE_BOOKID);
                 stm.setString(1, bookID);
                 rs = stm.executeQuery();
                 if (rs.next()) {
                     check = true;
                 }
             }
-        } catch (Exception e) {
         } finally {
             if (stm != null) {
                 stm.close();
@@ -156,19 +147,17 @@ public class TblBookDAO implements Serializable {
         return check;
     }
 
-    public boolean insertBook(TblBookDTO book) throws SQLException {
+    public boolean insertBook(TblBookDTO book) 
+            throws SQLException, NamingException {
         if (book == null) {
             return false;
         }
-
         Connection con = null;
         PreparedStatement stm = null;
         try {
             con = DBHepler.makeConnection();
             if (con != null) {
-                String sql = "Insert Into tblBook(bookID, bookName, imagePath, quantity, price, status)"
-                        + " Values (?,?,?,?,?,?)";
-                stm = con.prepareStatement(sql);
+                stm = con.prepareStatement(INSERT_BOOK);
                 stm.setString(1, book.getBookID());
                 stm.setString(2, book.getBookName());
                 stm.setString(3, book.getImagePath());
@@ -180,7 +169,6 @@ public class TblBookDAO implements Serializable {
                     return true;
                 }
             }
-        } catch (Exception e) {
         } finally {
             if (stm != null) {
                 stm.close();
@@ -193,7 +181,7 @@ public class TblBookDAO implements Serializable {
     }
 
     public List<TblBookDTO> showAllBookByName()
-            throws SQLException {
+            throws SQLException, NamingException {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -201,8 +189,7 @@ public class TblBookDAO implements Serializable {
         try {
             con = DBHepler.makeConnection();
             if (con != null) {
-                String sql = " Select bookID, bookName, imagePath, quantity, price, status From tblBook ";
-                stm = con.prepareStatement(sql);
+                stm = con.prepareStatement(SHOW_ALL_BOOK_BY_NAME);
                 rs = stm.executeQuery();
                 while (rs.next()) {
                     if (rs.getBoolean("status") == true) {
@@ -216,7 +203,6 @@ public class TblBookDAO implements Serializable {
                     }
                 }
             }
-        } catch (Exception e) {
         } finally {
             if (rs != null) {
                 rs.close();
@@ -230,5 +216,4 @@ public class TblBookDAO implements Serializable {
         }
         return listBook;
     }
-
 }
