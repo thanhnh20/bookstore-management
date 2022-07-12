@@ -15,7 +15,7 @@ public class TblBookDTO implements Serializable{
     private String bookID;
     private String boookName;
     private String imagePath;
-    private int quantity;
+    private int quantity; 
     private double price;
     private boolean status;
 

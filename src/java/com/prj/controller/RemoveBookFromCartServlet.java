@@ -5,28 +5,30 @@
  */
 package com.prj.controller;
 
+import com.prj.cart.CartList;
+import com.prj.tblAccount.TblAccountDTO;
+import com.prj.tblbook.TblBookDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author ASUS
  */
-public class DispatchController extends HttpServlet {
-    private final String START_UP_CONTROLLER = "StartUpServlet";
-    private final String LOGIN_CONTROLLER = "LoginServlet";
-    private final String USER_SEARCH_BOOK_CONTROLLER = "UserSearchBookServlet";
-    private final String LOGOUT_CONTROLLER = "LogoutServlet";
-    private final String ADD_BOOK_TO_CART_CONTROLLER = "AddBookToCartServlet";
-    private final String SHOW_CART_CONTROLLER = "ShowCartServlet";
-    private final String SHOW_LIST_BOOK_CONTROLLER = "ShowListBookToUserServlet";
-    private final String REMOVE_BOOK_FROM_CART_CONTROLLER = "RemoveBookFromCartServlet";
-    private final String CHECK_OUT_CONTROLLER = "CheckOutServlet";
+@WebServlet(name = "RemoveBookFromCartServlet", urlPatterns = {"/RemoveBookFromCartServlet"})
+public class RemoveBookFromCartServlet extends HttpServlet {
+
+    private final String LOGIN_PAGE = "login.jsp";
+    private final String CART_PAGE = "cart.jsp";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -39,33 +41,35 @@ public class DispatchController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-        String url = "";
-        String action = request.getParameter("btnAction");
-        try{
-            if(action == null){
-                url = START_UP_CONTROLLER;
-            }else if("Login".equals(action)){
-                url = LOGIN_CONTROLLER;
-            }else if("Logout".equals(action)){
-                url = LOGOUT_CONTROLLER;
-            }else if("Show".equals(action)){
-                url = SHOW_LIST_BOOK_CONTROLLER;
-            }else if("Search".equals(action)){
-                url = USER_SEARCH_BOOK_CONTROLLER;
-            }else if("Add to cart".equals(action)){
-                url = ADD_BOOK_TO_CART_CONTROLLER;
-            }else if("ShowCart".equals(action)){
-                url = SHOW_CART_CONTROLLER;
-            }else if("Remove".equals(action)){
-                url = REMOVE_BOOK_FROM_CART_CONTROLLER;
-            }else if("Checkout".equals(action)){
-                url = CHECK_OUT_CONTROLLER;
+
+        String url = LOGIN_PAGE;
+        String[] listBookID = request.getParameterValues("checkedItems");
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            TblAccountDTO accountDTO = (TblAccountDTO) session.getAttribute("USER_ROLE");
+            if (accountDTO != null) {
+                CartList cartList = (CartList) session.getAttribute("CART");
+                List<TblBookDTO> listCart = null;
+                if (cartList != null) {
+                    if (listBookID != null) {
+                        cartList.removeFromCart(listBookID);
+                    } else {
+                        String msg = "Please select items";
+                        request.setAttribute("MSG", msg);
+                    }
+                    listCart = cartList.getCartList();
+                }
+                url = CART_PAGE;
+                request.setAttribute("LIST_BOOK_IN_CART", listCart);
+                RequestDispatcher rd = request.getRequestDispatcher(url);
+                rd.forward(request, response);
+            } else {
+                response.sendRedirect(url);
             }
-        }finally{
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
+        } else {
+            response.sendRedirect(url);
         }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

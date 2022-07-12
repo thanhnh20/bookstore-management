@@ -5,16 +5,18 @@
  */
 package com.prj.controller;
 
-import com.prj.tblAccount.TblAccountDAO;
 import com.prj.tblAccount.TblAccountDTO;
-import com.prj.tblAccount.TblAccountError;
+import com.prj.tblbook.TblBookDAO;
+import com.prj.tblbook.TblBookDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,11 +26,10 @@ import javax.servlet.http.HttpSession;
  *
  * @author ASUS
  */
-public class LoginServlet extends HttpServlet {
+@WebServlet(name = "UserSearchBookServlet", urlPatterns = {"/UserSearchBookServlet"})
+public class UserSearchBookServlet extends HttpServlet {
     private final String LOGIN_PAGE = "login.jsp";
-    private final String ADMIN_PAGE = "admin.jsp";
     private final String USER_PAGE = "user.jsp";
-    private final String SHOW_LIST_BOOK_CONTROLLER = "ShowListBookToUserServlet";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,65 +43,66 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
-        //get parameter        
-        String username = request.getParameter("txtUsername");
-        String password = request.getParameter("txtPassword");
-        String checkRemember = request.getParameter("checkRemember");
+        String searchValue = request.getParameter("txtSearchValue");
+        String srange = request.getParameter("range");
+        int range = 0;
+        if(!srange.isEmpty()){
+            range = Integer.parseInt(srange);
+        }
         
+        
+        HttpSession session = request.getSession(false);
         String url = LOGIN_PAGE;
-        try {
-            TblAccountError error = new TblAccountError();
-            boolean foundError = false;
-            // check username is not empty
-            if (username.trim().length() == 0) {
-                error.setUsernameEmpty("Please enter username");
-                foundError = true;
-            }
-            //check password is not empty
-            if (password.trim().length() == 0) {
-                error.setPasswordEmpty("Please enter password");
-                foundError = true;
-            }
-            //set error if found
-            if (foundError) {
-                request.setAttribute("ERROR", error);
-                RequestDispatcher rd = request.getRequestDispatcher(url);
-                rd.forward(request, response);
-            } else {
-                TblAccountDAO accountDAO = new TblAccountDAO();
-                boolean result = accountDAO.checkLogin(username, password);
-                if (result) {
-                    TblAccountDTO accountDTO = accountDAO.getAccount(username);
-                    // add cookie                 
-                    if (checkRemember != null) {
-                        Cookie cookie = new Cookie(username, password);
-                        cookie.setMaxAge(60 * 1);
-                        response.addCookie(cookie);
+        try{
+            if(session != null){
+                TblAccountDTO accountDTO = (TblAccountDTO)session.getAttribute("USER_ROLE");
+                if(accountDTO != null){
+                    TblBookDAO bookDAO = new TblBookDAO();
+                    List<TblBookDTO> listBook = bookDAO.getListBook();
+                    List<TblBookDTO> listSearch = new ArrayList<TblBookDTO>();
+                    int min = 0;
+                    int max = 0;
+                    if(range == 1){
+                        max = 50;
                     }
-                    //check role
-                    if (accountDTO.isRole()) {
-                        HttpSession session = request.getSession();
-                        session.setAttribute("ADMIN_ROLE", accountDTO);
-                        url = ADMIN_PAGE;
-                        response.sendRedirect(url);
-                    } else {
-                        HttpSession session = request.getSession();
-                        session.setAttribute("USER_ROLE", accountDTO);
-                        url = SHOW_LIST_BOOK_CONTROLLER;
-                        response.sendRedirect(url);
+                    else if(range == 2){
+                        min = 50;
+                        max = 150;
+                    }else if(range == 3){
+                        min = 150;
+                        max = 1000;
                     }
-                } else {
-                    //set error account
-                    error.setWrongAccount("Your username or password invalid");
-                    request.setAttribute("ERROR", error);
+                    for (TblBookDTO dto : listBook) {
+                        boolean check = true;
+                        if(!searchValue.isEmpty() && !(dto.getBoookName().trim().toLowerCase().contains(searchValue.trim().toLowerCase()))){
+                            check = false;
+                        }
+                        if(range != 0 && !(min <= dto.getPrice() && dto.getPrice() < max)){
+                            check = false;
+                        }
+                        if(check){
+                            listSearch.add(dto);
+                        }
+                    }
+                    
+                    int numberResult = listSearch.size();
+                    
+                    url = USER_PAGE; 
+                    request.setAttribute("rangeSelected", range);
+                    request.setAttribute("NUMBER_RESULT", numberResult);
+                    request.setAttribute("LIST_BOOK", listSearch);
                     RequestDispatcher rd = request.getRequestDispatcher(url);
                     rd.forward(request, response);
+                }else{
+                    response.sendRedirect(url);
                 }
+            }else{
+                response.sendRedirect(url);
             }
-        } catch (NamingException ex) {
-            log("LoginController_NamingException " + ex.getMessage());
-        } catch (SQLException ex) {
-            log("LoginController_SQLException " + ex.getMessage());
+        }catch(NamingException ex){
+            log("NamingException at UserSearchBookServlet " + ex.getMessage());
+        }catch(SQLException ex){
+            log("SQLException at UserSearchBookServlet " + ex.getMessage());
         }
     }
 

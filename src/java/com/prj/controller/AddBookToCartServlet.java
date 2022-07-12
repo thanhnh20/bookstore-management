@@ -5,16 +5,19 @@
  */
 package com.prj.controller;
 
-import com.prj.tblAccount.TblAccountDAO;
+import com.prj.cart.CartList;
 import com.prj.tblAccount.TblAccountDTO;
-import com.prj.tblAccount.TblAccountError;
+import com.prj.tblbook.TblBookDAO;
+import com.prj.tblbook.TblBookDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,11 +27,12 @@ import javax.servlet.http.HttpSession;
  *
  * @author ASUS
  */
-public class LoginServlet extends HttpServlet {
+@WebServlet(name = "AddBookToCartServlet", urlPatterns = {"/AddBookToCartServlet"})
+public class AddBookToCartServlet extends HttpServlet {
+
     private final String LOGIN_PAGE = "login.jsp";
-    private final String ADMIN_PAGE = "admin.jsp";
-    private final String USER_PAGE = "user.jsp";
-    private final String SHOW_LIST_BOOK_CONTROLLER = "ShowListBookToUserServlet";
+    private final String USER_SEARCH_BOOK_CONTROLLER = "UserSearchBookServlet";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,66 +45,40 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-        //get parameter        
-        String username = request.getParameter("txtUsername");
-        String password = request.getParameter("txtPassword");
-        String checkRemember = request.getParameter("checkRemember");
-        
+
+        String bookID = request.getParameter("bookID");
+        HttpSession session = request.getSession(false);
         String url = LOGIN_PAGE;
         try {
-            TblAccountError error = new TblAccountError();
-            boolean foundError = false;
-            // check username is not empty
-            if (username.trim().length() == 0) {
-                error.setUsernameEmpty("Please enter username");
-                foundError = true;
-            }
-            //check password is not empty
-            if (password.trim().length() == 0) {
-                error.setPasswordEmpty("Please enter password");
-                foundError = true;
-            }
-            //set error if found
-            if (foundError) {
-                request.setAttribute("ERROR", error);
-                RequestDispatcher rd = request.getRequestDispatcher(url);
-                rd.forward(request, response);
-            } else {
-                TblAccountDAO accountDAO = new TblAccountDAO();
-                boolean result = accountDAO.checkLogin(username, password);
-                if (result) {
-                    TblAccountDTO accountDTO = accountDAO.getAccount(username);
-                    // add cookie                 
-                    if (checkRemember != null) {
-                        Cookie cookie = new Cookie(username, password);
-                        cookie.setMaxAge(60 * 1);
-                        response.addCookie(cookie);
+            if (session != null) {
+                TblAccountDTO accountDTO = (TblAccountDTO) session.getAttribute("USER_ROLE");
+                if (accountDTO != null) {
+                    TblBookDAO bookDAO = new TblBookDAO();
+                    //get book add
+                    TblBookDTO bookDTO = bookDAO.GetBookByBookID(bookID);
+
+                    //add book to cart                    
+                    CartList cartList = (CartList) session.getAttribute("CART");
+                    if (cartList == null) {
+                        cartList = new CartList();
                     }
-                    //check role
-                    if (accountDTO.isRole()) {
-                        HttpSession session = request.getSession();
-                        session.setAttribute("ADMIN_ROLE", accountDTO);
-                        url = ADMIN_PAGE;
-                        response.sendRedirect(url);
-                    } else {
-                        HttpSession session = request.getSession();
-                        session.setAttribute("USER_ROLE", accountDTO);
-                        url = SHOW_LIST_BOOK_CONTROLLER;
-                        response.sendRedirect(url);
-                    }
-                } else {
-                    //set error account
-                    error.setWrongAccount("Your username or password invalid");
-                    request.setAttribute("ERROR", error);
+                    cartList.addBookToCart(bookDTO);
+                    session.setAttribute("CART", cartList);
+                    url = USER_SEARCH_BOOK_CONTROLLER;
+                    String msg = "Add book to cart successfull";
+                    request.setAttribute("MSG", msg);
                     RequestDispatcher rd = request.getRequestDispatcher(url);
                     rd.forward(request, response);
+                } else {
+                    response.sendRedirect(url);
                 }
+            } else {
+                response.sendRedirect(url);
             }
         } catch (NamingException ex) {
-            log("LoginController_NamingException " + ex.getMessage());
+            log("NamingException at AddBookToCartServlet " + ex.getMessage());
         } catch (SQLException ex) {
-            log("LoginController_SQLException " + ex.getMessage());
+            log("SQLException at AddBookToCartServlet " + ex.getMessage());
         }
     }
 
