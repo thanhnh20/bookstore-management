@@ -11,15 +11,15 @@ package com.prj.tblorderdetail;
  */
 public class TblOrderDetailError {
     private String outOfQuantityError;
-    private String invalidFormatQuantity;
+    private String invalidQuantity;
     private String quantityOutOfStockError;
 
     public TblOrderDetailError() {
     }   
     
-    public TblOrderDetailError(String outOfQuantityError, String invalidFormatQuantity, String quantityOutOfStockError) {
+    public TblOrderDetailError(String outOfQuantityError, String invalidQuantity, String quantityOutOfStockError) {
         this.outOfQuantityError = outOfQuantityError;
-        this.invalidFormatQuantity = invalidFormatQuantity;
+        this.invalidQuantity = invalidQuantity;
         this.quantityOutOfStockError = quantityOutOfStockError;
     }
 
@@ -31,12 +31,12 @@ public class TblOrderDetailError {
         this.outOfQuantityError = outOfQuantityError;
     }
 
-    public String getInvalidFormatQuantity() {
-        return invalidFormatQuantity;
+    public String getInvalidQuantity() {
+        return invalidQuantity;
     }
 
-    public void setInvalidFormatQuantity(String invalidFormatQuantity) {
-        this.invalidFormatQuantity = invalidFormatQuantity;
+    public void setInvalidQuantity(String invalidQuantity) {
+        this.invalidQuantity = invalidQuantity;
     }
 
     public String getQuantityOutOfStockError() {

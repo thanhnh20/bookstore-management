@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 public class TblBookDTO implements Serializable{
     private String bookID;
-    private String boookName;
+    private String bookName;
     private String imagePath;
     private int quantity; 
     private double price;
@@ -22,9 +22,9 @@ public class TblBookDTO implements Serializable{
     public TblBookDTO() {
     }
 
-    public TblBookDTO(String bookID, String boookName, String imagePath, int quantity, double price, boolean status) {
+    public TblBookDTO(String bookID, String bookName, String imagePath, int quantity, double price, boolean status) {
         this.bookID = bookID;
-        this.boookName = boookName;
+        this.bookName = bookName;
         this.imagePath = imagePath;
         this.quantity = quantity;
         this.price = price;
@@ -39,12 +39,12 @@ public class TblBookDTO implements Serializable{
         this.bookID = bookID;
     }
 
-    public String getBoookName() {
-        return boookName;
+    public String getBookName() {
+        return bookName;
     }
 
-    public void setBoookName(String boookName) {
-        this.boookName = boookName;
+    public void setBookName(String bookName) {
+        this.bookName = bookName;
     }
 
     public String getImagePath() {
@@ -78,6 +78,5 @@ public class TblBookDTO implements Serializable{
     public void setStatus(boolean status) {
         this.status = status;
     }
-    
-    
+
 }

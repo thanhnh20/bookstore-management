@@ -24,7 +24,7 @@
                     ${account.fullName}</a>
                 <a class="link" href="DispatchController?btnAction=Logout">Log out</a>
             </div>
-            <a class="link" href="DispatchController?btnAction=Show">
+            <a class="link" href="DispatchController?btnAction=ShowListBookAsUser">
                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="30" fill="currentColor" class="bi bi-cart3"
                      viewBox="0 0 16 16">
                 <path
@@ -46,7 +46,7 @@
             <c:if test="${empty listBookInCart}">
                 <h5>
                     Your cart is empty        
-                    <a class="" href="DispatchController?btnAction=Show">Click to add Book</a>
+                    <a class="" href="DispatchController?btnAction=ShowListBookAsUser">Click to add Book</a>
                 </h5>
             </c:if>
         </div>
@@ -58,6 +58,7 @@
                     <h6 class="text-danger">
                         ${error.outOfQuantityError}
                         ${error.quantityOutOfStockError}
+                        ${error.invalidQuantity}
                     </h6>
                 </c:if>               
             </div> 
@@ -78,7 +79,7 @@
                             <c:forEach var="book" items="${listBookInCart}" varStatus="count">                     
                                 <tr>
                                     <td>${count.count}</td>
-                                    <td>${book.boookName}</td>
+                                    <td>${book.bookName}</td>
                                     <td>
                                         <input style="width: 100px; margin: auto" class="form-control text-center" type="number" name="${book.bookID}"                          
                                                value="${book.quantity}" />
@@ -101,10 +102,10 @@
                         </tbody>
                     </table>
                     <button
-                        name="btnAction" value="Checkout" class="btn btn-outline-danger">
+                        name="btnAction" value="CheckoutAsUser" class="btn btn-outline-danger">
                         Check out
                     </button>
-                    <button name="btnAction" value="Remove" class="btn btn-outline-danger">
+                    <button name="btnAction" value="RemoveCartAsUser" class="btn btn-outline-danger">
                         Remove from cart
                     </button>
                 </form>

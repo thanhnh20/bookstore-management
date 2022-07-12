@@ -48,9 +48,7 @@ public class UserSearchBookServlet extends HttpServlet {
         int range = 0;
         if(!srange.isEmpty()){
             range = Integer.parseInt(srange);
-        }
-        
-        
+        }             
         HttpSession session = request.getSession(false);
         String url = LOGIN_PAGE;
         try{
@@ -61,20 +59,20 @@ public class UserSearchBookServlet extends HttpServlet {
                     List<TblBookDTO> listBook = bookDAO.getListBook();
                     List<TblBookDTO> listSearch = new ArrayList<TblBookDTO>();
                     int min = 0;
-                    int max = 0;
+                    int max = 1000;
                     if(range == 1){
-                        max = 50;
+                        max = 30;
                     }
                     else if(range == 2){
-                        min = 50;
-                        max = 150;
+                        min = 30;
+                        max = 60;
                     }else if(range == 3){
-                        min = 150;
+                        min = 60;
                         max = 1000;
                     }
                     for (TblBookDTO dto : listBook) {
                         boolean check = true;
-                        if(!searchValue.isEmpty() && !(dto.getBoookName().trim().toLowerCase().contains(searchValue.trim().toLowerCase()))){
+                        if(!searchValue.isEmpty() && !(dto.getBookName().trim().toLowerCase().contains(searchValue.trim().toLowerCase()))){
                             check = false;
                         }
                         if(range != 0 && !(min <= dto.getPrice() && dto.getPrice() < max)){

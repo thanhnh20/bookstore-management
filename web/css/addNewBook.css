@@ -19,8 +19,12 @@
 }
 .form{
     max-width: 500px;
-    margin: 110px auto;
+    margin: 20px auto;
 }
 .btn{
     margin-top: 15px;
+}
+
+.error{
+    margin-bottom: 20px
 }

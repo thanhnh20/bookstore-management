@@ -39,7 +39,7 @@
                 ${account.fullName}</a>
             <a class="link" href="DispatchController?btnAction=Logout">Log out</a>
         </div>
-        <a class="link" href="DispatchController?btnAction=ShowCart">
+        <a class="link" href="DispatchController?btnAction=ShowCartAsUser">
             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="30" fill="currentColor" class="bi bi-cart3"
                  viewBox="0 0 16 16">
             <path
@@ -61,20 +61,20 @@
             <option value="1"<c:if test="${'1' eq rangeSelected}">
                     selected
                 </c:if>>
-                Min - 50$
+                Min - 30$
             </option>
             <option value="2"<c:if test="${'2' eq rangeSelected}">
                     selected
                 </c:if>>
-                50$ - 150$
+                30$ - 60$
             </option>
             <option value="3"<c:if test="${'3' eq rangeSelected}">
                     selected
                 </c:if>>
-                150$ Above
+                60$ Above
             </option>
         </select>
-        <button name="btnAction" value="Search" class="btn btn-primary childSearch">Search</button>
+        <button name="btnAction" value="SearchAsUser" class="btn btn-primary childSearch">Search</button>
     </form>
     <div class="numberResult">
         <c:set var="numberResult" value="${requestScope.NUMBER_RESULT}"/>
@@ -87,7 +87,7 @@
         <c:if test="${not empty msg}">
             <h5 style="color: red;">
                 ${msg}
-                <a href="DispatchController?btnAction=ShowCart">Click to view your cart</a>
+                <a href="DispatchController?btnAction=ShowCartAsUser">Click to view your cart</a>
             </h5>
         </c:if>
     </div>
@@ -101,16 +101,16 @@
             <form action="DispatchController">
                 <div class="card shadow-sm" style="width: 15rem;">
                     <img style="height: 240px;" src="image/${bookDTO.imagePath}" class="card-img-top" alt="...">
-                    <div style="height: 80px;" class="card-body">
-                        <h5 class="card-title">${bookDTO.boookName}</h5>
+                    <div style="height: 60px;" class="card-body">
+                        <h6 class="card-title">${bookDTO.bookName}</h6>
                     </div>
 
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">
-                            <font style="font-weight: 500;">Quantity: </font>${bookDTO.quantity}
+                            Quantity: <font style="font-weight: 500;">${bookDTO.quantity}</font>
                         </li>
                         <li class="list-group-item">
-                            <font style="font-weight: 500;">Price: </font>${bookDTO.price} $
+                            Price: <font style="font-weight: 750;">${bookDTO.price}$</font>
                         </li>
                         <c:if test="${bookDTO.status eq 'true'}">
                             <li class="list-group-item" style="color: green;font-weight: 500;">Stocking</li>
@@ -126,7 +126,7 @@
                         <button <c:if test="${bookDTO.status eq 'false' or bookDTO.quantity lt '1'}">
                                 disabled
                             </c:if>
-                            class="btn btn-outline-primary" name="btnAction" value="Add to cart">Add to card</button>
+                            class="btn btn-outline-primary" name="btnAction" value="AddToCartAsUser">Add to card</button>
                     </div>
                 </div>
             </form>   

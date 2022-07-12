@@ -27,6 +27,11 @@ public class DispatchController extends HttpServlet {
     private final String SHOW_LIST_BOOK_CONTROLLER = "ShowListBookToUserServlet";
     private final String REMOVE_BOOK_FROM_CART_CONTROLLER = "RemoveBookFromCartServlet";
     private final String CHECK_OUT_CONTROLLER = "CheckOutServlet";
+    private final String SEARCH_BOOK_CONTROLLER = "SearchBookServlet";
+    private final String DELETE_BOOK_CONTROLLER = "DeleteBookServlet";
+    private final String UPDATE_BOOK_CONTROLLER = "UpdateBookServlet";
+    private final String SIGNUP_BOOK_CONTROLLER = "SignUpBookServlet";
+    private final String SHOW_ALL_BOOK_CONTROLLER = "ShowAllBookServlet";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -49,18 +54,28 @@ public class DispatchController extends HttpServlet {
                 url = LOGIN_CONTROLLER;
             }else if("Logout".equals(action)){
                 url = LOGOUT_CONTROLLER;
-            }else if("Show".equals(action)){
+            }else if("ShowListBookAsUser".equals(action)){
                 url = SHOW_LIST_BOOK_CONTROLLER;
-            }else if("Search".equals(action)){
+            }else if("SearchAsUser".equals(action)){
                 url = USER_SEARCH_BOOK_CONTROLLER;
-            }else if("Add to cart".equals(action)){
+            }else if("AddToCartAsUser".equals(action)){
                 url = ADD_BOOK_TO_CART_CONTROLLER;
-            }else if("ShowCart".equals(action)){
+            }else if("ShowCartAsUser".equals(action)){
                 url = SHOW_CART_CONTROLLER;
-            }else if("Remove".equals(action)){
+            }else if("RemoveCartAsUser".equals(action)){
                 url = REMOVE_BOOK_FROM_CART_CONTROLLER;
-            }else if("Checkout".equals(action)){
+            }else if("CheckoutAsUser".equals(action)){
                 url = CHECK_OUT_CONTROLLER;
+            }else if("SearchBook".equals(action)){
+                url = SEARCH_BOOK_CONTROLLER;
+            }else if("DeleteBook".equals(action)){
+                url = DELETE_BOOK_CONTROLLER;
+            }else if("UpdateBook".equals(action)){ //Update button of Book 
+                url = UPDATE_BOOK_CONTROLLER;
+            }else if("SignUpBook".equals(action)){ 
+                url = SIGNUP_BOOK_CONTROLLER;
+            }else if("ShowAllBook".equals(action)){ 
+                url = SHOW_ALL_BOOK_CONTROLLER;
             }
         }finally{
             RequestDispatcher rd = request.getRequestDispatcher(url);

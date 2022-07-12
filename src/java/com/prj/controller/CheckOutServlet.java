@@ -69,9 +69,13 @@ public class CheckOutServlet extends HttpServlet {
                         for (String id : listID) {
                             quantity = Integer.parseInt(request.getParameter(id));
                             TblBookDTO bookDTO = bookDAO.GetBookByBookID(id);
-
-                            if (bookDTO.getQuantity() == 0) {
-                                error.setQuantityOutOfStockError("The " + bookDTO.getBoookName() + " book is out of stock, "
+                            
+                            if(quantity <= 0){
+                                error.setInvalidQuantity("Your input quantity is invalid");
+                                check = false;
+                            }
+                            else if (bookDTO.getQuantity() == 0) {
+                                error.setQuantityOutOfStockError("The "+"\""+  bookDTO.getBookName()+"\""+ " book is out of stock, "
                                         + "let remove from the cart");
                                 check = false;
                             } else if (quantity > bookDTO.getQuantity()) {

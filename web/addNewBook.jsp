@@ -1,3 +1,5 @@
+<%@page import="com.prj.tblbook.TblBookError"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,55 +37,77 @@
                 List Book
             </a>
         </div>
-
-        <form class="form" action="DispatchController" method="POST">
+        <%--
+            TblBookError bookError = (TblBookError) request.getAttribute("BOOK_ERROR");
+            if (bookError == null) {
+                bookError = new TblBookError();
+            }
+        --%>
+        <c:set var="bookError" value="${requestScope.BOOK_ERROR}"/>
+        <div>
+            <h3 style="margin-top: 50px">
+                Create new Book
+            </h3>
+        </div>
+        <form class="form" action="DispatchController">
             <div class="form-floating">
-                <input type="text" name="txtBookID" required="" class="form-control" id="formInputName" placeholder="input">
-                <label for="formInputBookID">*Book ID ([1..10] characters)</label>
+                <input type="text" name="txtBookID" value="${param.txtBookID}" class="form-control" id="formInputName" placeholder="input">
+                <label for="formInputBookID">*Book ID</label>
             </div>
             <div class="error text-danger text-left">
-                Error
-            </div>
-
-            <div class="form-floating">
-                <input type="text" name="txtBookName" required="" class="form-control" id="formInputName" placeholder="input">
-                <label for="formInputName">*Name Book [1..50] characters !</label>
-            </div>
-            <div class="error text-danger text-left">
-                Error
-            </div>
-
-            <div class="form-floating">
-                <input type="text" name="txtQuantity" required="" class="form-control" id="formInputQuantity" placeholder="input">
-                <label for="formInputQuantity">*Quantity >= 0</label>
-            </div>
-            <div class="error text-danger text-left">
-                Error
+                <c:if test="${not empty bookError}">
+                    ${bookError.bookIDError}    <%--= bookError.getBookIDError()--%>
+                </c:if>      
             </div>
 
             <div class="form-floating">
-                <input type="text" name="txtPrice" required="" class="form-control" id="formInputPrice" placeholder="input">
-                <label for="formInputPrice">*Price must be > 0</label>
+                <input type="text" name="txtBookName" value="${param.txtBookName}" class="form-control" id="formInputName" placeholder="input">
+                <label for="formInputName">*Name Book</label>
             </div>
             <div class="error text-danger text-left">
-                Error
+                <c:if test="${not empty error}">
+                    ${bookError.bookNameError}<%--= bookError.getBookNameError()--%>
+                </c:if>
+            </div>
+            <div class="form-floating">
+                <input type="text" name="txtQuantity" value="${param.txtQuantity}" class="form-control" id="formInputQuantity" placeholder="input">
+                <label for="formInputQuantity">*Quantity</label>
+            </div>
+            <div class="error text-danger text-left">
+                <c:if test="${not empty error}">
+                    ${bookError.quantityError} <%--= bookError.getQuantityError()--%>
+                </c:if>
             </div>
 
             <div class="form-floating">
-                <input type="text" name="txtImagePath" required="" class="form-control" id="formInputPrice" placeholder="input">
-                <label for="formInputImagePath">*Image path [1..300] characters !</label>
+                <input type="text" name="txtPrice" value="${param.txtPrice}" class="form-control" id="formInputPrice" placeholder="input">
+                <label for="formInputPrice">*Price</label>
             </div>
             <div class="error text-danger text-left">
-                Error
+                <c:if test="${not empty error}">
+                    ${bookError.priceError} <%--= bookError.getPriceError()--%>
+                </c:if>
             </div>
 
+            <div class="form-floating">
+                <input type="text" name="txtImagePath" value="${param.txtImagePath}" class="form-control" id="formInputPrice" placeholder="input">
+                <label for="formInputImagePath">*Image path</label>
+            </div>
+            <div class="error text-danger text-left">
+                <c:if test="${not empty error}">
+                    ${bookError.imagePathError} <%--= bookError.getImagePathError()--%>
+                </c:if>
+            </div>         
+            <div class="error text-danger text-left">
+                <c:if test="${not empty error}">
+                    ${bookError.messageError}<%--= bookError.getMessageError()--%>
+                </c:if>
+            </div>
+                
             <button class="btn btn-outline-primary" type="submit" value="SignUpBook" name="btnAction">
-                Add new book
+                Create
             </button>
-            
-<!--            <button class="btn btn-outline-primary" type="reset" value="Reset">
-                Reset
-            </button>-->
+                <!--<input class="btn btn-outline-primary" type="submit" name="btnAction" value="SignUpBook" />-->         
             <input class="btn btn-outline-primary" type="reset" value="Reset">
         </form>
     </body>
