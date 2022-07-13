@@ -6,10 +6,16 @@
 package com.prj.controller;
 
 import com.prj.tblAccount.TblAccountDTO;
-import com.prj.tblbook.TblBookDAO;
-import com.prj.tblbook.TblBookDTO;
+import com.prj.tblorder.TblOrderDAO;
+import com.prj.tblorder.TblOrderDTO;
+import com.prj.tblorderdetail.TblOrderDetailDAO;
+import com.prj.tblorderdetail.TblOrderDetailDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.List;
+import javax.naming.NamingException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,14 +25,14 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Admin
+ * @author ASUS
  */
-@WebServlet(name = "UpdateBookServlet", urlPatterns = {"/UpdateBookServlet"})
-public class UpdateBookServlet extends HttpServlet {
+@WebServlet(name = "ShowOrderDetailServlet", urlPatterns = {"/ShowOrderDetailServlet"})
+public class ShowOrderDetailServlet extends HttpServlet {
 
     private final String LOGIN_PAGE = "login.jsp";
-    private final String ERROR = "SearchBookServlet";
-    private final String SUCCESS = "SearchBookServlet";
+    private final String ORDER_DETAIL_PAGE = "orderDetail.jsp";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -39,38 +45,38 @@ public class UpdateBookServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = LOGIN_PAGE;
         HttpSession session = request.getSession(false);
+        
+        String orderID = request.getParameter("orderID");
+        String url = LOGIN_PAGE;
         try {
             if (session != null) {
-                TblAccountDTO accountDTO = (TblAccountDTO) session.getAttribute("ADMIN_ROLE");
+                TblAccountDTO accountDTO = (TblAccountDTO) session.getAttribute("USER_ROLE");
                 if (accountDTO != null) {
-                    String bookID = request.getParameter("txtBookID");
-                    String bookName = request.getParameter("txtBookName");
-                    String imagePath = request.getParameter("txtImagePath");
-                    int quantity = Integer.parseInt(request.getParameter("txtQuantity"));
-                    double price = Double.parseDouble(request.getParameter("txtPrice"));
-
-                    TblBookDAO daoBook = new TblBookDAO();
-                    TblBookDTO dtoBook = new TblBookDTO();
-                    dtoBook.setBookID(bookID);
-                    dtoBook.setBookName(bookName);
-                    dtoBook.setImagePath(imagePath);
-                    dtoBook.setQuantity(quantity);
-                    dtoBook.setPrice(price);
-                    boolean check = daoBook.updateBook(dtoBook);
-                    if (check) {
-                        String msg = "You have successfully updated";
-                        request.setAttribute("MSG", msg);
-                        url = SUCCESS;
-                        request.getRequestDispatcher(url).forward(request, response);
+                    TblOrderDetailDAO orderDetailDAO = new TblOrderDetailDAO();
+                    List<TblOrderDetailDTO> listOrderDetail = orderDetailDAO.getOrderDetailByOrderID(orderID);
+                    double amount = 0;
+                    for (TblOrderDetailDTO tblOrderDetailDTO : listOrderDetail) {
+                        amount += tblOrderDetailDTO.getTotalPrice();
                     }
+                    TblOrderDAO orderDAO = new TblOrderDAO();
+                    TblOrderDTO orderDTO = orderDAO.getOrderByOrderID(orderID);
+                    request.setAttribute("AMOUNT", amount);
+                    request.setAttribute("ORDER", orderDTO); 
+                    request.setAttribute("LIST_ORDER_DETAIL", listOrderDetail);                   
+                    url = ORDER_DETAIL_PAGE;
+                    RequestDispatcher rd = request.getRequestDispatcher(url);
+                    rd.forward(request, response);
+                } else {
+                    response.sendRedirect(url);
                 }
             } else {
                 response.sendRedirect(url);
             }
-        } catch (Exception ex) {
-            log("Error at Update Book Servlet !" + ex.toString());
+        } catch (SQLException ex) {
+            log("SQLException at ShowOrderDetailServlet " + ex.getMessage());
+        } catch (NamingException ex) {
+            log("NamingException at ShowOrderDetailServlet " + ex.getMessage());
         }
     }
 

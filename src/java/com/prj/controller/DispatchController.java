@@ -32,6 +32,11 @@ public class DispatchController extends HttpServlet {
     private final String UPDATE_BOOK_CONTROLLER = "UpdateBookServlet";
     private final String SIGNUP_BOOK_CONTROLLER = "SignUpBookServlet";
     private final String SHOW_ALL_BOOK_CONTROLLER = "ShowAllBookServlet";
+    private final String USER_UPDATE_PROFILE_CONTROLLER = "UserUpdateProfileServlet";
+    private final String SHOW_USER_PROFILE_CONTROLLER = "ShowUserProfileServlet";
+    private final String SHOW_ORDER_HISTORY_CONTROLLER = "ShowOrderHistoryServlet";
+    private final String SHOW_ORDER_DETAIL_CONTROLLER = "ShowOrderDetailServlet";
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -76,6 +81,14 @@ public class DispatchController extends HttpServlet {
                 url = SIGNUP_BOOK_CONTROLLER;
             }else if("ShowAllBook".equals(action)){ 
                 url = SHOW_ALL_BOOK_CONTROLLER;
+            }else if("UpdateProfile".equals(action)){
+                url = USER_UPDATE_PROFILE_CONTROLLER;
+            }else if("ShowProfile".equals(action)){
+                url = SHOW_USER_PROFILE_CONTROLLER;
+            }else if("ShowOrderHistory".equals(action)){
+                url = SHOW_ORDER_HISTORY_CONTROLLER;
+            }else if("ShowOrderDetail".equals(action)){
+                url = SHOW_ORDER_DETAIL_CONTROLLER;
             }
         }finally{
             RequestDispatcher rd = request.getRequestDispatcher(url);

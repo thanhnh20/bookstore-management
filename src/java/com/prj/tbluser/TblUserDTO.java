@@ -18,16 +18,18 @@ public class TblUserDTO implements Serializable{
     private String address;
     private Date birthday;
     private String phone;
+    private boolean gender;
     private TblAccountDTO account;
 
     public TblUserDTO() {
     }
     
-    public TblUserDTO(int userID, String address, Date birthday, String phone, TblAccountDTO account) {
+    public TblUserDTO(int userID, String address, Date birthday, String phone, boolean gender, TblAccountDTO account) {
         this.userID = userID;
         this.address = address;
         this.birthday = birthday;
         this.phone = phone;
+        this.gender = gender;
         this.account = account;
     }
 
@@ -69,6 +71,14 @@ public class TblUserDTO implements Serializable{
 
     public void setAccount(TblAccountDTO account) {
         this.account = account;
+    }
+
+    public boolean isGender() {
+        return gender;
+    }
+
+    public void setGender(boolean gender) {
+        this.gender = gender;
     }
     
     

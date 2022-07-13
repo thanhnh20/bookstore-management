@@ -259,7 +259,8 @@ public class TblBookDAO implements Serializable {
             con = DBHepler.makeConnection();
             if (con != null) {
                 String sql = "SELECT bookID, bookName, imagePath, quantity, price, status "
-                        + "FROM tblBook";
+                        + "FROM tblBook "
+                        + "ORDER BY status DESC";
                 stm = con.prepareStatement(sql);
                 rs = stm.executeQuery();
                 while (rs.next()) {

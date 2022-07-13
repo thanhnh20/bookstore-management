@@ -5,6 +5,7 @@
  */
 package com.prj.controller;
 
+import com.prj.tblAccount.TblAccountDTO;
 import com.prj.tblbook.TblBookDAO;
 import com.prj.tblbook.TblBookDTO;
 import com.prj.tblbook.TblBookError;
@@ -15,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -22,7 +24,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "SignUpBookServlet", urlPatterns = {"/SignUpBookServlet"})
 public class SignUpBookServlet extends HttpServlet {
-
+    
+    private final String LOGIN_PAGE = "login.jsp";
     private final String ERROR = "addNewBook.jsp";
     private final String SUCCESS = "adminListBook.jsp";
 
@@ -38,56 +41,66 @@ public class SignUpBookServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ERROR; 
+        String url = LOGIN_PAGE;
+        HttpSession session = request.getSession(false);
         try {
-            String bookID = request.getParameter("txtBookID");
-            String bookName = request.getParameter("txtBookName");
-            String imagePath = request.getParameter("txtImagePath");
-            int quantity = Integer.parseInt(request.getParameter("txtQuantity"));
-            double price = Double.parseDouble(request.getParameter("txtPrice"));
-            
-            
-            boolean check = true;
-            TblBookError bookError = new TblBookError();
-            
-            if (bookID.trim().length() < 1 || bookID.trim().length() > 10) {
-                check = false;
-                bookError.setBookIDError("Book ID length must be [4..10] characters !");
-            }
-            if (bookName.trim().length() < 1 || bookName.trim().length() > 50) {
-                check = false;
-                bookError.setBookNameError("Book Name length must be [1..50] characters !");
-            }
-            if (imagePath.trim().length() < 1 || imagePath.trim().length() > 300) {
-                check = false;
-                bookError.setImagePathError("ImagePath length must be [1..300] characters !");
-            }
-            if (quantity < 0) {
-                check = false;
-                bookError.setQuantityError("Quantity must be greater than 0 !");
-            }
-            if (price <= 0) {
-                check = false;
-                bookError.setPriceError("Price must be greater than 0 !");
-            }
-            if (check) {
-                TblBookDAO dao = new TblBookDAO();
-                TblBookDTO dto = new TblBookDTO(bookID, bookName, imagePath, quantity, price, true);
-                boolean checkDuplicate = dao.checkDuplicate(bookID);
-                if (checkDuplicate) {
-                    bookError.setBookIDError("Duplicate Book ID : " + bookID);
-                    request.setAttribute("BOOK_ERROR", bookError);
-                } else {
-                    boolean checkInsert = dao.insertBook(dto);
-                    if (checkInsert) {
-                        url = SUCCESS;
+            if (session != null) {
+                TblAccountDTO accountDTO = (TblAccountDTO) session.getAttribute("ADMIN_ROLE");
+                if (accountDTO != null) {
+                    String bookID = request.getParameter("txtBookID");
+                    String bookName = request.getParameter("txtBookName");
+                    String imagePath = request.getParameter("txtImagePath");
+                    int quantity = Integer.parseInt(request.getParameter("txtQuantity"));
+                    double price = Double.parseDouble(request.getParameter("txtPrice"));
+
+                    boolean check = true;
+                    TblBookError bookError = new TblBookError();
+
+                    if (bookID.trim().length() < 1 || bookID.trim().length() > 10) {
+                        check = false;
+                        bookError.setBookIDError("Book ID length must be [4..10] characters !");
+                    }
+                    if (bookName.trim().length() < 1 || bookName.trim().length() > 50) {
+                        check = false;
+                        bookError.setBookNameError("Book Name length must be [1..50] characters !");
+                    }
+                    if (imagePath.trim().length() < 1 || imagePath.trim().length() > 300) {
+                        check = false;
+                        bookError.setImagePathError("ImagePath length must be [1..300] characters !");
+                    }
+                    if (quantity < 0) {
+                        check = false;
+                        bookError.setQuantityError("Quantity must be greater than 0 !");
+                    }
+                    if (price <= 0) {
+                        check = false;
+                        bookError.setPriceError("Price must be greater than 0 !");
+                    }
+                    if (check) {
+                        TblBookDAO dao = new TblBookDAO();
+                        TblBookDTO dto = new TblBookDTO(bookID, bookName, imagePath, quantity, price, true);
+                        boolean checkDuplicate = dao.checkDuplicate(bookID);
+                        if (checkDuplicate) {
+                            url = ERROR;
+                            bookError.setBookIDError("Duplicate Book ID : " + bookID);
+                            request.setAttribute("BOOK_ERROR", bookError);
+                        } else {
+                            boolean checkInsert = dao.insertBook(dto);
+                            if (checkInsert) {
+                                url = SUCCESS;
+                            } else {
+                                bookError.setMessageError("Can not Create New Book !");
+                            }
+                        }
                     } else {
                         bookError.setMessageError("Can not Create New Book !");
+                        request.setAttribute("BOOK_ERROR", bookError);
                     }
+                }else{
+                    response.sendRedirect(url);
                 }
-            } else {
-                bookError.setMessageError("Can not Create New Book !");
-                request.setAttribute("BOOK_ERROR", bookError);
+            }else{
+                response.sendRedirect(url);
             }
         } catch (Exception e) {
             log("Error at SignUp new Book !" + e.toString());

@@ -52,7 +52,7 @@
         </c:if>
         <c:set var="msg" value="${requestScope.MSG}"/>
         <c:if test="${not empty msg}">
-            <h5 style="margin: 20px" class="text-danger">
+            <h5 style="margin: 20px" class="text-success">
                 ${msg}         
             </h5>
         </c:if>
@@ -99,10 +99,10 @@
                                 <td>
                                     <%--=listBook.isStatus()--%>
                                     <c:if test="${bookDTO.status eq 'true'}">
-                                        <font color="Green">Stocking</font>
+                                        <font color="Green">Ready</font>
                                     </c:if>
                                     <c:if test="${bookDTO.status eq 'false'}">
-                                        <font color="red">Out of Stock</font>
+                                        <font color="red">Not Ready</font>
                                     </c:if>
                                 </td>
                                 <td>
@@ -159,6 +159,7 @@
                             </button>
                         </form>-->
         </div>
-
+        <div class="head">
+        </div>
 
     </body>

@@ -18,22 +18,34 @@
     color: #eb2188;
 }
 .form{
-    max-width: 700px;
-    margin: 0 auto;
+    max-width: 500px;
+    margin: 30px auto; 
 }
+
 .row{
-    margin-top: 20px;
+    margin-bottom: 25px;
 }
 .col-form-label{
     font-weight: 500;
 }
-.form-control{
-    border: none;
-    border-bottom: 1px solid ;
-    border-radius: 0%;
-    padding-bottom: 5px;
-}
-.form-control:hover{
-    color: #eb2188;
 
+.profile-input{
+    border: none;
+    width: 300px;
+    text-align: left;
+    border-bottom: 2px solid #080a52;
+    padding-bottom: 1px;
+}
+.profile-input:hover{
+    border-bottom-color:  #eb2188;
+}
+.btn{
+    margin: auto;
+}
+.gender{
+    margin-left: 12px;
+}
+
+.error{
+    margin-top: 5px
 }

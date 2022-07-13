@@ -29,10 +29,11 @@
 <body class="text-center">
     <div class="head sticky-top">
         <c:set var="account" value="${sessionScope.USER_ROLE}"/>
-        <img src="image/book.jpg" alt="" class="image">
+            <img src="image/book.jpg" alt="" class="image">   
+<!--            <font class="link">My Book Store</font>-->
         <div class="user">
-            <a class="link" href="userProfile.html"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="30" fill="currentColor"
-                                                         class="bi bi-person-lines-fill" viewBox="0 0 16 16">
+            <a class="link" href="DispatchController?btnAction=ShowProfile"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="30" fill="currentColor"
+                                                                                 class="bi bi-person-lines-fill" viewBox="0 0 16 16">
                 <path
                     d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z" />
                 </svg>
@@ -45,7 +46,7 @@
             <path
                 d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
             </svg>
-            Your Cart
+            My Cart
         </a>
 
     </div>
@@ -85,7 +86,7 @@
     <div>
         <c:set var="msg" value="${requestScope.MSG}"/>
         <c:if test="${not empty msg}">
-            <h5 style="color: red;">
+            <h5 class="text-success">
                 ${msg}
                 <a href="DispatchController?btnAction=ShowCartAsUser">Click to view your cart</a>
             </h5>
@@ -113,10 +114,10 @@
                             Price: <font style="font-weight: 750;">${bookDTO.price}$</font>
                         </li>
                         <c:if test="${bookDTO.status eq 'true'}">
-                            <li class="list-group-item" style="color: green;font-weight: 500;">Stocking</li>
+                            <li class="list-group-item" style="color: green;font-weight: 500;">Ready</li>
                             </c:if>
                             <c:if test="${bookDTO.status eq 'false'}">
-                            <li class="list-group-item" style="color: red;font-weight: 500;">Out of Stock</li>
+                            <li class="list-group-item" style="color: red;font-weight: 500;">Not Ready</li>
                             </c:if>
                     </ul>
                     <input type="hidden" name="bookID" value="${bookDTO.bookID}" />
@@ -132,5 +133,6 @@
             </form>   
         </c:forEach>
     </div>
-
+    <div class="head">
+    </div>
 </body>

@@ -6,10 +6,13 @@
 package com.prj.controller;
 
 import com.prj.tblAccount.TblAccountDTO;
-import com.prj.tblbook.TblBookDAO;
-import com.prj.tblbook.TblBookDTO;
+import com.prj.tbluser.TblUserDAO;
+import com.prj.tbluser.TblUserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import javax.naming.NamingException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,14 +22,12 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Admin
+ * @author ASUS
  */
-@WebServlet(name = "UpdateBookServlet", urlPatterns = {"/UpdateBookServlet"})
-public class UpdateBookServlet extends HttpServlet {
-
+@WebServlet(name = "ShowUserProfileServlet", urlPatterns = {"/ShowUserProfileServlet"})
+public class ShowUserProfileServlet extends HttpServlet {
     private final String LOGIN_PAGE = "login.jsp";
-    private final String ERROR = "SearchBookServlet";
-    private final String SUCCESS = "SearchBookServlet";
+    private final String USER_PROFILE_PAGE  = "userProfile.jsp";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -39,38 +40,31 @@ public class UpdateBookServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = LOGIN_PAGE;
+        
         HttpSession session = request.getSession(false);
-        try {
-            if (session != null) {
-                TblAccountDTO accountDTO = (TblAccountDTO) session.getAttribute("ADMIN_ROLE");
+        String url = LOGIN_PAGE;
+        try{
+            if(session != null){
+                TblAccountDTO accountDTO = (TblAccountDTO) session.getAttribute("USER_ROLE");
                 if (accountDTO != null) {
-                    String bookID = request.getParameter("txtBookID");
-                    String bookName = request.getParameter("txtBookName");
-                    String imagePath = request.getParameter("txtImagePath");
-                    int quantity = Integer.parseInt(request.getParameter("txtQuantity"));
-                    double price = Double.parseDouble(request.getParameter("txtPrice"));
-
-                    TblBookDAO daoBook = new TblBookDAO();
-                    TblBookDTO dtoBook = new TblBookDTO();
-                    dtoBook.setBookID(bookID);
-                    dtoBook.setBookName(bookName);
-                    dtoBook.setImagePath(imagePath);
-                    dtoBook.setQuantity(quantity);
-                    dtoBook.setPrice(price);
-                    boolean check = daoBook.updateBook(dtoBook);
-                    if (check) {
-                        String msg = "You have successfully updated";
-                        request.setAttribute("MSG", msg);
-                        url = SUCCESS;
-                        request.getRequestDispatcher(url).forward(request, response);
-                    }
+                    TblUserDAO userDAO = new TblUserDAO();
+                    TblUserDTO user = userDAO.getUserByUserName(accountDTO.getUsername());
+                    request.setAttribute("USER_PROFILE", user);
+                    url = USER_PROFILE_PAGE;
+                    RequestDispatcher rd = request.getRequestDispatcher(url);
+                    rd.forward(request, response);
+                }else{
+                    response.sendRedirect(url);
                 }
-            } else {
+            }else{
                 response.sendRedirect(url);
             }
-        } catch (Exception ex) {
-            log("Error at Update Book Servlet !" + ex.toString());
+        }catch(NamingException ex){
+            log("NamingException at ShowUserProfileServlet " + ex.getMessage());
+        }catch(SQLException ex){
+            log("SQLException at ShowUserProfileServlet " + ex.getMessage());
+        }finally{
+            
         }
     }
 
