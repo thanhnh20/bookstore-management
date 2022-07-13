@@ -11,6 +11,9 @@ import com.prj.tblbook.TblBookDTO;
 import com.prj.tblbook.TblBookError;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import javax.naming.NamingException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,7 +30,7 @@ public class SignUpBookServlet extends HttpServlet {
     
     private final String LOGIN_PAGE = "login.jsp";
     private final String ERROR = "addNewBook.jsp";
-    private final String SUCCESS = "adminListBook.jsp";
+    private final String SUCCESS = "ShowAllBookServlet";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -84,17 +87,23 @@ public class SignUpBookServlet extends HttpServlet {
                             url = ERROR;
                             bookError.setBookIDError("Duplicate Book ID : " + bookID);
                             request.setAttribute("BOOK_ERROR", bookError);
+                            request.getRequestDispatcher(url).forward(request, response);
                         } else {
                             boolean checkInsert = dao.insertBook(dto);
                             if (checkInsert) {
                                 url = SUCCESS;
+                                request.getRequestDispatcher(url).forward(request, response);
                             } else {
+                                url = ERROR;
                                 bookError.setMessageError("Can not Create New Book !");
+                                request.getRequestDispatcher(url).forward(request, response);
                             }
                         }
                     } else {
+                        url = ERROR;
                         bookError.setMessageError("Can not Create New Book !");
                         request.setAttribute("BOOK_ERROR", bookError);
+                        request.getRequestDispatcher(url).forward(request, response);
                     }
                 }else{
                     response.sendRedirect(url);
@@ -102,10 +111,10 @@ public class SignUpBookServlet extends HttpServlet {
             }else{
                 response.sendRedirect(url);
             }
-        } catch (Exception e) {
-            log("Error at SignUp new Book !" + e.toString());
-        } finally {
-            request.getRequestDispatcher(url).forward(request, response);
+        } catch (NamingException ex) {
+            log("NamingException at SignUpBookServlet " + ex.getMessage());
+        }catch (SQLException ex){
+            log("SQLException at SignUpBookServlet " + ex.getMessage());
         }
     }
 

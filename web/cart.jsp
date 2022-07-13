@@ -111,7 +111,5 @@
                 </form>
             </div>
         </c:if>
-        <div class="head">
-        </div>
 
     </body>

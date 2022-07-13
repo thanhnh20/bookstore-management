@@ -125,6 +125,4 @@
                 </div>
             </div>
         </form>
-        <div class="head">
-        </div>
     </body>

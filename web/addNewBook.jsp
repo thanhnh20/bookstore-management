@@ -54,7 +54,7 @@
             </div>
             <form class="form" action="DispatchController">
                 <div class="form-floating">
-                    <input type="text" name="txtBookID" value="${param.txtBookID}" class="form-control" id="formInputName" placeholder="input">
+                    <input required type="text" name="txtBookID" value="${param.txtBookID}" class="form-control" id="formInputName" placeholder="input">
                     <label for="formInputBookID">*Book ID</label>
                 </div>
                 <div class="error text-danger text-left">
@@ -64,45 +64,45 @@
                 </div>
 
                 <div class="form-floating">
-                    <input type="text" name="txtBookName" value="${param.txtBookName}" class="form-control" id="formInputName" placeholder="input">
+                    <input required type="text" name="txtBookName" value="${param.txtBookName}" class="form-control" id="formInputName" placeholder="input">
                     <label for="formInputName">*Name Book</label>
                 </div>
                 <div class="error text-danger text-left">
-                    <c:if test="${not empty error}">
+                    <c:if test="${not empty bookError}">
                         ${bookError.bookNameError}<%--= bookError.getBookNameError()--%>
                     </c:if>
                 </div>
                 <div class="form-floating">
-                    <input type="text" name="txtQuantity" value="${param.txtQuantity}" class="form-control" id="formInputQuantity" placeholder="input">
+                    <input required type="text" name="txtQuantity" value="${param.txtQuantity}" class="form-control" id="formInputQuantity" placeholder="input">
                     <label for="formInputQuantity">*Quantity</label>
                 </div>
                 <div class="error text-danger text-left">
-                    <c:if test="${not empty error}">
+                    <c:if test="${not empty bookError}">
                         ${bookError.quantityError} <%--= bookError.getQuantityError()--%>
                     </c:if>
                 </div>
 
                 <div class="form-floating">
-                    <input type="text" name="txtPrice" value="${param.txtPrice}" class="form-control" id="formInputPrice" placeholder="input">
+                    <input required type="text" name="txtPrice" value="${param.txtPrice}" class="form-control" id="formInputPrice" placeholder="input">
                     <label for="formInputPrice">*Price</label>
                 </div>
                 <div class="error text-danger text-left">
-                    <c:if test="${not empty error}">
+                    <c:if test="${not empty bookError}">
                         ${bookError.priceError} <%--= bookError.getPriceError()--%>
                     </c:if>
                 </div>
 
                 <div class="form-floating">
-                    <input type="text" name="txtImagePath" value="${param.txtImagePath}" class="form-control" id="formInputPrice" placeholder="input">
+                    <input required type="text" name="txtImagePath" value="${param.txtImagePath}" class="form-control" id="formInputPrice" placeholder="input">
                     <label for="formInputImagePath">*Image path</label>
                 </div>
                 <div class="error text-danger text-left">
-                    <c:if test="${not empty error}">
+                    <c:if test="${not empty bookError}">
                         ${bookError.imagePathError} <%--= bookError.getImagePathError()--%>
                     </c:if>
                 </div>         
                 <div class="error text-danger text-left">
-                    <c:if test="${not empty error}">
+                    <c:if test="${not empty bookError}">
                         ${bookError.messageError}<%--= bookError.getMessageError()--%>
                     </c:if>
                 </div>
@@ -113,7 +113,5 @@
                 <!--<input class="btn btn-outline-primary" type="submit" name="btnAction" value="SignUpBook" />-->         
                 <input class="btn btn-outline-primary" type="reset" value="Reset">
             </form>
-        </div>
-        <div class="head fixed-bottom">
         </div>
     </body>

@@ -68,7 +68,7 @@
                             <th>Price</th>
                             <th>Status</th>
                             <th>Image Path</th>
-                            <th colspan="2">Action</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -114,7 +114,7 @@
                                     <input type="hidden" name="txtBookID" value="${bookDTO.bookID}" <%--value="<%=listBook.getBookID()%>"--%> />
                                     <input class="btn btn-success" type="submit" name="btnAction" value="UpdateBook" />      
                                 </td>
-                                <td>
+<!--                                <td>
                                     <%--<a class="btn btn-danger" href="DispatchController?btnAction=DeleteBook&txtBookID=<%=listBook.getBookID()%>&searchValue=${requestScope.searchValue}">Delete</a> --%>
                                     <c:url var="url" value="DispatchController">
                                         <c:param name="btnAction" value="DeleteBook"/>
@@ -122,7 +122,7 @@
                                         <c:param name="searchValue" value="${param.searchValue}"/>
                                     </c:url>
                                     <a class="btn btn-danger" href="${url}">Delete</a>
-                                </td>                                       
+                                </td>                                       -->
 
                             </tr>
                         </form>
@@ -158,8 +158,6 @@
                                 List All Book
                             </button>
                         </form>-->
-        </div>
-        <div class="head">
         </div>
 
     </body>

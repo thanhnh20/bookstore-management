@@ -133,6 +133,4 @@
             </form>   
         </c:forEach>
     </div>
-    <div class="head">
-    </div>
 </body>

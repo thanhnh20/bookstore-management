@@ -57,7 +57,7 @@
                 </div>
                 <div>
                     <h6>
-                        Amount: ${amount}$
+                        Amount: <font class="text-danger">${amount}$</font>
                     </h6>
                 </div>
             </div>
