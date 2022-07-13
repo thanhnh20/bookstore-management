@@ -22,8 +22,10 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "ShowAllBookServlet", urlPatterns = {"/ShowAllBookServlet"})
 public class ShowAllBookServlet extends HttpServlet {
-private final String ERROR = "adminListBook.html";
+
+    private final String ERROR = "adminListBook.html";
     private final String SUCCESS = "adminListBook.jsp";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,7 +42,7 @@ private final String ERROR = "adminListBook.html";
         try {
             TblBookDAO dao = new TblBookDAO();
             List<TblBookDTO> list = dao.showAllBookByName();
-            if(!list.isEmpty()){
+            if (!list.isEmpty()) {
                 request.setAttribute("LIST_BOOK", list);
                 url = SUCCESS;
             }

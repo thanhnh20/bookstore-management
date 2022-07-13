@@ -39,7 +39,7 @@ public class SearchBookServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
-        String url = SUCCESS;
+        String url = ERROR;
         try {
             String searchValue = request.getParameter("searchValue");
             TblBookDAO dao = new TblBookDAO();
