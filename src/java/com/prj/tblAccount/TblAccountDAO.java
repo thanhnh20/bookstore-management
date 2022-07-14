@@ -17,7 +17,8 @@ import javax.naming.NamingException;
  *
  * @author ASUS
  */
-public class TblAccountDAO implements Serializable{
+public class TblAccountDAO implements Serializable {
+
     //check login account with username and password
     public boolean checkLogin(String username, String password) throws SQLException, NamingException {
         Connection con = null;
@@ -50,7 +51,7 @@ public class TblAccountDAO implements Serializable{
         }
         return false;
     }
-      
+
     //get account by username
     public TblAccountDTO getAccount(String username) throws NamingException, SQLException {
         Connection con = null;
@@ -87,5 +88,75 @@ public class TblAccountDAO implements Serializable{
             }
         }
         return null;
+    }
+
+    public boolean createAcount(TblAccountDTO account) throws SQLException, NamingException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        try {
+            con = DBHepler.makeConnection();
+            if (con != null) {
+                con.setAutoCommit(false);
+                String sql = "INSERT into TblAccount(username, password, fullName, isRole)"
+                        + " VALUES(?, ?, ?, ?) ";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, account.getUsername());
+                stm.setString(2, account.getPassword());
+                stm.setString(3, account.getFullName());
+                stm.setBoolean(4, account.isRole());
+                int effectRow1 = stm.executeUpdate();
+                
+                sql = "INSERT INTO tblUser(username)"
+                        + " VALUES(?) ";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, account.getUsername());
+                int effectRow2 = stm.executeUpdate();
+                
+                con.commit();
+                if(effectRow1 > 0 && effectRow2 > 0){
+                    return true;
+                }
+            }
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.setAutoCommit(true);
+                con.close();              
+            }
+        }
+        return false;
+    }
+
+    public boolean checkAccount(String username) throws SQLException, NamingException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            con = DBHepler.makeConnection();
+            if (con != null) {
+                String sql = "SELECT username "
+                        + "FROM TblAccount "
+                        + "WHERE username = ?";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, username);
+                rs = stm.executeQuery();
+                if (rs.next()) {
+                    return true;
+                }
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return false;
     }
 }

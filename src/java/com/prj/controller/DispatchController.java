@@ -36,6 +36,7 @@ public class DispatchController extends HttpServlet {
     private final String SHOW_USER_PROFILE_CONTROLLER = "ShowUserProfileServlet";
     private final String SHOW_ORDER_HISTORY_CONTROLLER = "ShowOrderHistoryServlet";
     private final String SHOW_ORDER_DETAIL_CONTROLLER = "ShowOrderDetailServlet";
+    private final String REGISTER_CONTROLLER = "RegisterServlet";
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -89,6 +90,8 @@ public class DispatchController extends HttpServlet {
                 url = SHOW_ORDER_HISTORY_CONTROLLER;
             }else if("ShowOrderDetail".equals(action)){
                 url = SHOW_ORDER_DETAIL_CONTROLLER;
+            }else if("Register".equals(action)){
+                url = REGISTER_CONTROLLER;
             }
         }finally{
             RequestDispatcher rd = request.getRequestDispatcher(url);

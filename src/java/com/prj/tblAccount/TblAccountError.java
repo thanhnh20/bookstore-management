@@ -15,14 +15,20 @@ public class TblAccountError implements Serializable{
     private String usernameEmpty;
     private String passwordEmpty;
     private String wrongAccount;
+    private String wrongPassword;
+    private String fullName;
+    private String usernameDuplicate;
 
     public TblAccountError() {
     }
 
-    public TblAccountError(String usernameEmpty, String passwordEmpty, String wrongAccount) {
+    public TblAccountError(String usernameEmpty, String passwordEmpty, String wrongAccount, String wrongPassword, String fullName, String usernameDuplicate) {
         this.usernameEmpty = usernameEmpty;
         this.passwordEmpty = passwordEmpty;
         this.wrongAccount = wrongAccount;
+        this.wrongPassword = wrongPassword;
+        this.fullName = fullName;
+        this.usernameDuplicate = usernameDuplicate;
     }
 
     public String getUsernameEmpty() {
@@ -48,4 +54,30 @@ public class TblAccountError implements Serializable{
     public void setWrongAccount(String wrongAccount) {
         this.wrongAccount = wrongAccount;
     }
+
+    public String getWrongPassword() {
+        return wrongPassword;
+    }
+
+    public void setWrongPassword(String wrongPassword) {
+        this.wrongPassword = wrongPassword;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getUsernameDuplicate() {
+        return usernameDuplicate;
+    }
+
+    public void setUsernameDuplicate(String usernameDuplicate) {
+        this.usernameDuplicate = usernameDuplicate;
+    }
+    
+    
 }

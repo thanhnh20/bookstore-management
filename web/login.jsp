@@ -19,7 +19,12 @@
     </head> 
     <body class="text-center">
         <div class="form-signin">
-            <img src="image/Pngtre.png" alt="" class="image"><br>
+            <div>
+                <a href="DispatchController?btnAction=ShowListBookAsUser">
+                    <img src="image/Pngtre.png" alt="" class="image"><br>
+                </a>
+            </div>
+            
             <form action="DispatchController" method="POST">
                 <div class="error text-danger text-left">
                     <c:set var="error" value="${requestScope.ERROR}"/>
@@ -53,7 +58,7 @@
                     <button class="btn btn-outline-danger" type="submit" name="btnAction" value="Login">
                         Log In
                     </button>
-                    <a href="register.html" class="btn btn-outline-primary" type="submit">
+                    <a href="register.jsp" class="btn btn-outline-primary" type="submit">
                         Register
                     </a>     
                 </div>
