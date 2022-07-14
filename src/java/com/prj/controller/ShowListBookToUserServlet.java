@@ -27,8 +27,10 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "ShowListBookToUserServlet", urlPatterns = {"/ShowListBookToUserServlet"})
 public class ShowListBookToUserServlet extends HttpServlet {
+
     private final String LOGIN_PAGE = "login.jsp";
     private final String USER_PAGE = "user.jsp";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,30 +43,21 @@ public class ShowListBookToUserServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
         HttpSession session = request.getSession(false);
         String url = LOGIN_PAGE;
-        try{
-            if(session != null){
-                TblAccountDTO accountDTO = (TblAccountDTO)session.getAttribute("USER_ROLE");
-                if(accountDTO != null){
-                    TblBookDAO bookDAO = new TblBookDAO();
-                    List<TblBookDTO> listBook = bookDAO.getListBook();
-                    int numberResult = listBook.size();
-                    url = USER_PAGE;
-                    request.setAttribute("NUMBER_RESULT", numberResult);
-                    request.setAttribute("LIST_BOOK", listBook);
-                    RequestDispatcher rd = request.getRequestDispatcher(url);
-                    rd.forward(request, response);
-                }else{
-                    response.sendRedirect(url);
-                }
-            }else{
-                response.sendRedirect(url);
-            }
-        }catch(NamingException ex){
+        try {
+            TblBookDAO bookDAO = new TblBookDAO();
+            List<TblBookDTO> listBook = bookDAO.getListBook();
+            int numberResult = listBook.size();
+            url = USER_PAGE;
+            request.setAttribute("NUMBER_RESULT", numberResult);
+            request.setAttribute("LIST_BOOK", listBook);
+            RequestDispatcher rd = request.getRequestDispatcher(url);
+            rd.forward(request, response);
+        } catch (NamingException ex) {
             log("NamingException at ShowListBookToUserServlet " + ex.getMessage());
-        }catch(SQLException ex){
+        } catch (SQLException ex) {
             log("SQLException at ShowListBookToUserServlet " + ex.getMessage());
         }
     }

@@ -19,14 +19,7 @@
     </head> 
     <body class="text-center">
         <div class="form-signin">
-            <img src="image/book.jpg" alt="" class="image"><br>
-
-            <form action="register.html">
-                <button class="btn btn-outline-primary w-50" type="submit">
-                    Register
-                </button>
-            </form>
-
+            <img src="image/Pngtre.png" alt="" class="image"><br>
             <form action="DispatchController" method="POST">
                 <div class="error text-danger text-left">
                     <c:set var="error" value="${requestScope.ERROR}"/>
@@ -56,9 +49,14 @@
                     <input type="checkbox" class="form-check-input" id="flexCheckDefault" name="checkRemember" value="">
                     <label for="flexCheckDefault">Remember Me</label>
                 </div>
-                <button class="btn btn-outline-danger w-50" type="submit" name="btnAction" value="Login">
-                    Log In
-                </button>                    
+                <div class="acction">
+                    <button class="btn btn-outline-danger" type="submit" name="btnAction" value="Login">
+                        Log In
+                    </button>
+                    <a href="register.html" class="btn btn-outline-primary" type="submit">
+                        Register
+                    </a>     
+                </div>
             </form>
         </div>
     </body>

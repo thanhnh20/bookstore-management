@@ -75,7 +75,7 @@ public class CheckOutServlet extends HttpServlet {
                                 check = false;
                             }
                             else if (bookDTO.getQuantity() == 0) {
-                                error.setQuantityOutOfStockError("The "+"\""+  bookDTO.getBookName()+"\""+ " book is out of stock, "
+                                error.setQuantityOutOfStockError("The "+"\""+  bookDTO.getBookName()+"\""+ " book is not ready now, "
                                         + "let remove from the cart");
                                 check = false;
                             } else if (quantity > bookDTO.getQuantity()) {

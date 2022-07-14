@@ -7,10 +7,14 @@ body{
 }
 .btn{
     margin-top: 10px;
+    width: 100px;
 }
 .form-floating{
     margin-top: 10px;
 }
 .error{
     font-size: 13px;
+}
+.acction{
+    justify-content: space-around
 }

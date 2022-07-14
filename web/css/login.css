@@ -3,23 +3,23 @@ body{
 }
 .form-signin {
     max-width: 500px;
-    margin: 8% 40%;
+    margin: 6% 40%;
 }  
 .form-floating{
     margin-top: 5px;
 }
 .btn{
-    margin-top: 10px;
-
-}
-.form-check{
-    margin-top: 13px;
+    margin-top: 8px;
+    width: 100px    
 }
 .image{
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
 }
 .error{
     font-size: 13px;
     margin-top: 3px;
+}
+.acction{
+    justify-content: space-around
 }

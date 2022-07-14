@@ -23,9 +23,8 @@ import javax.servlet.http.HttpSession;
  * @author ASUS
  */
 public class StartUpServlet extends HttpServlet {
-    private final String LOGIN_PAGE = "login.jsp";
-    private final String ADMIN_PAGE = "admin.jsp";
-    private final String USER_PAGE = "user.jsp";
+    private final String SHOW_LIST_BOOK_TO_USER_CONTROLLER = "ShowListBookToUserServlet";
+    private final String SHOW_ALL_BOOK_TO_ADMIN_CONTROLLER = "ShowAllBookServlet";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,7 +37,7 @@ public class StartUpServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = LOGIN_PAGE;
+        String url = SHOW_LIST_BOOK_TO_USER_CONTROLLER;
         try{
             //get cookies
             Cookie[] listCookie = request.getCookies();
@@ -56,11 +55,10 @@ public class StartUpServlet extends HttpServlet {
                     if (accountDTO.isRole()) {
                         HttpSession session = request.getSession();
                         session.setAttribute("ADMIN_ROLE", accountDTO);
-                        url = ADMIN_PAGE;
+                        url = SHOW_ALL_BOOK_TO_ADMIN_CONTROLLER;
                     } else {
                         HttpSession session = request.getSession();
                         session.setAttribute("USER_ROLE", accountDTO);
-                        url = USER_PAGE;
                     }
                 }
             }

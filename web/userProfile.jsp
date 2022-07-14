@@ -15,7 +15,7 @@
     <body>
         <c:set var="user" value="${sessionScope.USER_ROLE}" />
         <div class="head sticky-top">
-            <img src="image/book.jpg" alt="" class="image">
+            <img src="image/Pngtre.png" alt="" class="image">
             <div class="user">
                 <a class="link" href="DispatchController?btnAction=ShowProfile"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="30" fill="currentColor"
                                                                                      class="bi bi-person-lines-fill" viewBox="0 0 16 16">

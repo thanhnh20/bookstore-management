@@ -34,8 +34,7 @@ public class TblUserDAO implements Serializable {
                         + "FROM tblUser "
                         + "WHERE username = ? ";               
                 stm = con.prepareStatement(sql);
-                stm.setString(1, username);
-                
+                stm.setString(1, username);                
                 rs = stm.executeQuery();
                 if(rs.next()){
                     int userID = rs.getInt("userID");

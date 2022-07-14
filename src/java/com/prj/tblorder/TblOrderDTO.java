@@ -8,6 +8,8 @@ package com.prj.tblorder;
 import com.prj.tblAccount.TblAccountDTO;
 import java.io.Serializable;
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 /**
  *
@@ -35,10 +37,10 @@ public class TblOrderDTO implements Serializable{
         this.orderID = orderID;
     }
 
-    public Date getPurchaseDate() {
+    public Date getPurchaseDate(){        
         return purchaseDate;
     }
-
+    
     public void setPurchaseDate(Date purchaseDate) {
         this.purchaseDate = purchaseDate;
     }

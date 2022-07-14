@@ -28,8 +28,10 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "UserSearchBookServlet", urlPatterns = {"/UserSearchBookServlet"})
 public class UserSearchBookServlet extends HttpServlet {
+
     private final String LOGIN_PAGE = "login.jsp";
     private final String USER_PAGE = "user.jsp";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,64 +44,54 @@ public class UserSearchBookServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
         String searchValue = request.getParameter("txtSearchValue");
         String srange = request.getParameter("range");
         int range = 0;
-        if(!srange.isEmpty()){
+        if (!srange.isEmpty()) {
             range = Integer.parseInt(srange);
-        }             
+        }
         HttpSession session = request.getSession(false);
         String url = LOGIN_PAGE;
-        try{
-            if(session != null){
-                TblAccountDTO accountDTO = (TblAccountDTO)session.getAttribute("USER_ROLE");
-                if(accountDTO != null){
-                    TblBookDAO bookDAO = new TblBookDAO();
-                    List<TblBookDTO> listBook = bookDAO.getListBook();
-                    List<TblBookDTO> listSearch = new ArrayList<TblBookDTO>();
-                    int min = 0;
-                    int max = 1000;
-                    if(range == 1){
-                        max = 30;
-                    }
-                    else if(range == 2){
-                        min = 30;
-                        max = 60;
-                    }else if(range == 3){
-                        min = 60;
-                        max = 1000;
-                    }
-                    for (TblBookDTO dto : listBook) {
-                        boolean check = true;
-                        if(!searchValue.isEmpty() && !(dto.getBookName().trim().toLowerCase().contains(searchValue.trim().toLowerCase()))){
-                            check = false;
-                        }
-                        if(range != 0 && !(min <= dto.getPrice() && dto.getPrice() < max)){
-                            check = false;
-                        }
-                        if(check){
-                            listSearch.add(dto);
-                        }
-                    }
-                    
-                    int numberResult = listSearch.size();
-                    
-                    url = USER_PAGE; 
-                    request.setAttribute("rangeSelected", range);
-                    request.setAttribute("NUMBER_RESULT", numberResult);
-                    request.setAttribute("LIST_BOOK", listSearch);
-                    RequestDispatcher rd = request.getRequestDispatcher(url);
-                    rd.forward(request, response);
-                }else{
-                    response.sendRedirect(url);
-                }
-            }else{
-                response.sendRedirect(url);
+        try {
+            TblBookDAO bookDAO = new TblBookDAO();
+            List<TblBookDTO> listBook = bookDAO.getListBook();
+            List<TblBookDTO> listSearch = new ArrayList<TblBookDTO>();
+            int min = 0;
+            int max = 1000;
+            if (range == 1) {
+                max = 30;
+            } else if (range == 2) {
+                min = 30;
+                max = 60;
+            } else if (range == 3) {
+                min = 60;
+                max = 1000;
             }
-        }catch(NamingException ex){
+            for (TblBookDTO dto : listBook) {
+                boolean check = true;
+                if (!searchValue.isEmpty() && !(dto.getBookName().trim().toLowerCase().contains(searchValue.trim().toLowerCase()))) {
+                    check = false;
+                }
+                if (range != 0 && !(min <= dto.getPrice() && dto.getPrice() < max)) {
+                    check = false;
+                }
+                if (check) {
+                    listSearch.add(dto);
+                }
+            }
+
+            int numberResult = listSearch.size();
+
+            url = USER_PAGE;
+            request.setAttribute("rangeSelected", range);
+            request.setAttribute("NUMBER_RESULT", numberResult);
+            request.setAttribute("LIST_BOOK", listSearch);
+            RequestDispatcher rd = request.getRequestDispatcher(url);
+            rd.forward(request, response);
+        } catch (NamingException ex) {
             log("NamingException at UserSearchBookServlet " + ex.getMessage());
-        }catch(SQLException ex){
+        } catch (SQLException ex) {
             log("SQLException at UserSearchBookServlet " + ex.getMessage());
         }
     }

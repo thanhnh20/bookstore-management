@@ -45,24 +45,15 @@ public class ShowCartServlet extends HttpServlet {
 
         HttpSession session = request.getSession(false);
         String url = LOGIN_PAGE;
-            if (session != null) {
-                TblAccountDTO accountDTO = (TblAccountDTO) session.getAttribute("USER_ROLE");
-                if (accountDTO != null) {
-                    List<TblBookDTO> listCart = null;
-                    CartList cart = (CartList)session.getAttribute("CART");
-                    if(cart != null){
-                        listCart = cart.getCartList();
-                    }                    
-                    url = CART_PAGE;                   
-                    request.setAttribute("LIST_BOOK_IN_CART", listCart);
-                    RequestDispatcher rd = request.getRequestDispatcher(url);
-                    rd.forward(request, response);
-                } else {
-                    response.sendRedirect(url);
-                }
-            } else {
-                response.sendRedirect(url);
-            }
+        List<TblBookDTO> listCart = null;
+        CartList cart = (CartList) session.getAttribute("CART");
+        if (cart != null) {
+            listCart = cart.getCartList();
+        }
+        url = CART_PAGE;
+        request.setAttribute("LIST_BOOK_IN_CART", listCart);
+        RequestDispatcher rd = request.getRequestDispatcher(url);
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
