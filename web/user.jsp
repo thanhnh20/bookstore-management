@@ -46,13 +46,14 @@
         </c:if>
         <c:if test="${empty account}">
             <div class="user">
-                <a class="link" href="login.jsp"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="30" fill="currentColor"
-                                                                                     class="bi bi-person-lines-fill" viewBox="0 0 16 16">
+                <label class="link" href="login.jsp"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="30" fill="currentColor"
+                                                          class="bi bi-person-lines-fill" viewBox="0 0 16 16">
                     <path
                         d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z" />
                     </svg>
-                    Login
-                </a>
+                    User
+                </label>
+                <a class="link" href="login.jsp">Log in</a>
             </div>
         </c:if>
 
@@ -112,7 +113,10 @@
         <h5>
             This search does not has result            
         </h5>
+        <a href="DispatchController?btnAction=ShowListBookAsUser" class="btn btn-primary">Show all book</a>
     </c:if>
+    <c:set var="numberBook" value="${requestScope.NUMBER_BOOK}"/>
+
     <div class="row row-cols-md-4">
         <c:forEach var="bookDTO" items="${requestScope.LIST_BOOK}">
             <form action="DispatchController">
@@ -148,5 +152,10 @@
                 </div>
             </form>   
         </c:forEach>
+    </div>
+    <div style="margin-bottom: 50px">
+        <c:if test="${numberResult lt numberBook and numberResult ne '0'}">
+            <a href="DispatchController?btnAction=ShowListBookAsUser" class="btn btn-primary">Show all book</a>
+        </c:if>
     </div>
 </body>

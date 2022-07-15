@@ -5,7 +5,7 @@
  */
 package com.prj.controller;
 
-
+import com.prj.tblAccount.TblAccountDTO;
 import com.prj.tblbook.TblBookDAO;
 import com.prj.tblbook.TblBookDTO;
 import java.io.IOException;
@@ -16,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -24,8 +25,9 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "SearchBookServlet", urlPatterns = {"/SearchBookServlet"})
 public class SearchBookServlet extends HttpServlet {
 
-    private final String ERROR = "adminListBook.html";
+    private final String ERROR = "adminListBook.jsp";
     private final String SUCCESS = "adminListBook.jsp";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,16 +40,26 @@ public class SearchBookServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
         String url = ERROR;
+        HttpSession session = request.getSession(false);
         try {
-            String searchValue = request.getParameter("searchValue");
-            TblBookDAO dao = new TblBookDAO();
-            List<TblBookDTO> list = dao.searchBookByName(searchValue.trim());
-            request.setAttribute("searchValue", searchValue);
-            if(!list.isEmpty()){
-                request.setAttribute("LIST_BOOK", list);
-                url = SUCCESS;
+            if (session != null) {
+                TblAccountDTO accountDTO = (TblAccountDTO) session.getAttribute("ADMIN_ROLE");
+                if (accountDTO != null) {
+                    String searchValue = request.getParameter("searchValue");
+                    TblBookDAO dao = new TblBookDAO();
+                    List<TblBookDTO> list = dao.searchBookByName(searchValue.trim());
+                    request.setAttribute("searchValue", searchValue);
+                    if (!list.isEmpty()) {
+                        request.setAttribute("LIST_BOOK", list);
+                        url = SUCCESS;
+                    }
+                } else {
+                    response.sendRedirect(url);
+                }
+            } else {
+                response.sendRedirect(url);
             }
         } catch (Exception e) {
             log("Error at SearchBookServlet " + e.toString());

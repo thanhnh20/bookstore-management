@@ -33,3 +33,6 @@
 .link-action{
     text-decoration: none  ;
 }
+.button{
+    justify-content: space-between;
+}

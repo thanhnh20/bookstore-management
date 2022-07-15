@@ -29,7 +29,7 @@
                     Admin</label>
                 <a class="link" href="DispatchController?btnAction=Logout">Log out</a>
             </div>
-            <a class="link" href="adminListUser.html">
+            <a class="link" href="DispatchController?btnAction=ShowListUser">
                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-list-ul"
                      viewBox="0 0 16 16">
                 <path fill-rule="evenodd"
@@ -49,6 +49,9 @@
             <h5 style="margin: 20px">
                 This search does not has result            
             </h5>
+            <a href="DispatchController?btnAction=ShowAllBook" class="btn btn-primary" type="submit" name="btnAction" value="ShowAllBook">
+                List All Book
+            </a>
         </c:if>
         <c:set var="msg" value="${requestScope.MSG}"/>
         <c:if test="${not empty msg}">
@@ -114,15 +117,15 @@
                                     <input type="hidden" name="txtBookID" value="${bookDTO.bookID}" <%--value="<%=listBook.getBookID()%>"--%> />
                                     <input class="btn btn-success" type="submit" name="btnAction" value="UpdateBook" />      
                                 </td>
-<!--                                <td>
-                                    <%--<a class="btn btn-danger" href="DispatchController?btnAction=DeleteBook&txtBookID=<%=listBook.getBookID()%>&searchValue=${requestScope.searchValue}">Delete</a> --%>
-                                    <c:url var="url" value="DispatchController">
-                                        <c:param name="btnAction" value="DeleteBook"/>
-                                        <c:param name="txtBookID" value="${bookDTO.bookID}"/>
-                                        <c:param name="searchValue" value="${param.searchValue}"/>
-                                    </c:url>
-                                    <a class="btn btn-danger" href="${url}">Delete</a>
-                                </td>                                       -->
+                                <!--                                <td>
+                                <%--<a class="btn btn-danger" href="DispatchController?btnAction=DeleteBook&txtBookID=<%=listBook.getBookID()%>&searchValue=${requestScope.searchValue}">Delete</a> --%>
+                                <c:url var="url" value="DispatchController">
+                                    <c:param name="btnAction" value="DeleteBook"/>
+                                    <c:param name="txtBookID" value="${bookDTO.bookID}"/>
+                                    <c:param name="searchValue" value="${param.searchValue}"/>
+                                </c:url>
+                                <a class="btn btn-danger" href="${url}">Delete</a>
+                            </td>                                       -->
 
                             </tr>
                         </form>
@@ -138,7 +141,19 @@
                 --%>
 
             </div>
-
+            <div style="margin: 20px 0 50px">
+                <a class="btn btn-outline-primary" href="addNewBook.html">Add New Book</a>
+                <!--            <form action="addNewBook.jsp">
+                                <button class="btn btn-outline-primary">
+                                    Add New Book
+                                </button>
+                            </form>-->
+                <!--            <form action="DispatchController">
+                                <button class="btn btn-primary" type="submit" name="btnAction" value="ShowAllBook">
+                                    List All Book
+                                </button>
+                            </form>-->
+            </div>
         </c:if>
         <%--
             List<TblBookDTO> list = (List<TblBookDTO>) request.getAttribute("LIST_BOOK");
@@ -146,18 +161,6 @@
                 if (!list.isEmpty()) {
                     request.setAttribute("LIST_BOOK", list);
         --%> 
-        <div style="margin: 20px 0 50px">
-            <a class="btn btn-outline-primary" href="addNewBook.html">Add New Book</a>
-            <!--            <form action="addNewBook.jsp">
-                            <button class="btn btn-outline-primary">
-                                Add New Book
-                            </button>
-                        </form>-->
-            <!--            <form action="DispatchController">
-                            <button class="btn btn-primary" type="submit" name="btnAction" value="ShowAllBook">
-                                List All Book
-                            </button>
-                        </form>-->
-        </div>
+
 
     </body>

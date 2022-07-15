@@ -6,11 +6,13 @@
 package com.prj.controller;
 
 import com.prj.tblAccount.TblAccountDTO;
-import com.prj.tblbook.TblBookDAO;
-import com.prj.tblbook.TblBookDTO;
+import com.prj.tbluser.TblUserDAO;
+import com.prj.tbluser.TblUserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.List;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,13 +22,13 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Admin
+ * @author ASUS
  */
-@WebServlet(name = "ShowAllBookServlet", urlPatterns = {"/ShowAllBookServlet"})
-public class ShowAllBookServlet extends HttpServlet {
+@WebServlet(name = "AdminSearchUserServlet", urlPatterns = {"/AdminSearchUserServlet"})
+public class AdminSearchUserServlet extends HttpServlet {
 
-    private final String ERROR = "adminListBook.jsp";
-    private final String SUCCESS = "adminListBook.jsp";
+    private final String LOGIN_PAGE = "login.jsp";
+    private final String ADMIN_LIST_USER_PAGE = "adminListUser.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,26 +42,30 @@ public class ShowAllBookServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ERROR;
+
+        String url = LOGIN_PAGE;
+        String username = request.getParameter("username");
         HttpSession session = request.getSession(false);
         try {
             if (session != null) {
                 TblAccountDTO accountDTO = (TblAccountDTO) session.getAttribute("ADMIN_ROLE");
                 if (accountDTO != null) {
-                    TblBookDAO dao = new TblBookDAO();
-                    List<TblBookDTO> list = dao.showAllBookByName();
-                    if (!list.isEmpty()) {
-                        request.setAttribute("LIST_BOOK", list);
-                        url = SUCCESS;
+                    if (username == null) {
+                        username = "";
                     }
+                    List<TblUserDTO> list = TblUserDAO.search(username.trim());
+                    request.setAttribute("LIST_USER", list);
+                    url = ADMIN_LIST_USER_PAGE;
                 } else {
                     response.sendRedirect(url);
                 }
             } else {
                 response.sendRedirect(url);
             }
-        } catch (Exception e) {
-            log("Error at ShowAllBookServlet " + e.toString());
+        } catch (NamingException ex) {
+            log("NamingException at AdminSearchUserServlet " + ex.getMessage());
+        } catch (SQLException ex) {
+            log("SQLException at AdminSearchUserServlet " + ex.getMessage());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

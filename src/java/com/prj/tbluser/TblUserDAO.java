@@ -14,6 +14,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.naming.NamingException;
 
 /**
@@ -32,11 +34,11 @@ public class TblUserDAO implements Serializable {
             if (con != null) {
                 String sql = "SELECT userID, address, gender, birthday, phoneNumber "
                         + "FROM tblUser "
-                        + "WHERE username = ? ";               
+                        + "WHERE username = ? ";
                 stm = con.prepareStatement(sql);
-                stm.setString(1, username);                
+                stm.setString(1, username);
                 rs = stm.executeQuery();
-                if(rs.next()){
+                if (rs.next()) {
                     int userID = rs.getInt("userID");
                     boolean gender = rs.getBoolean("gender");
                     String address = rs.getString("address");
@@ -49,7 +51,7 @@ public class TblUserDAO implements Serializable {
                 return user;
             }
         } finally {
-            if(rs != null){
+            if (rs != null) {
                 rs.close();
             }
             if (stm != null) {
@@ -62,8 +64,8 @@ public class TblUserDAO implements Serializable {
         return user;
     }
 
-    public boolean updateProfile(String address, Date birthday, String phoneNumber, boolean gender, 
-             String userName) throws SQLException, NamingException {
+    public boolean updateProfile(String address, Date birthday, String phoneNumber, boolean gender,
+            String userName) throws SQLException, NamingException {
         Connection con = null;
         PreparedStatement stm = null;
         try {
@@ -93,5 +95,93 @@ public class TblUserDAO implements Serializable {
             }
         }
         return false;
-    }    
+    }
+
+    public static List<TblUserDTO> getAllUser() throws SQLException, NamingException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        List<TblUserDTO> list = null;
+        //Connecting to a database
+        try {
+            con = DBHepler.makeConnection();
+            if (con != null) {
+                String sql = "select * from tblUser ";
+                stm = con.prepareStatement(sql);
+                rs = stm.executeQuery();
+                //load data into list
+                //if userId and password are correct
+                while (rs.next()) {
+                    TblUserDTO user = new TblUserDTO();
+                    TblAccountDAO d = new TblAccountDAO();
+                    user.setAccount(d.getAccount(rs.getString("username")));
+                    user.setUserID(rs.getInt("userID"));
+                    user.setAddress(rs.getString("address"));
+                    user.setBirthday(rs.getDate("birthday"));
+                    user.setPhone(rs.getString("phoneNumber"));
+                    if (list == null) {
+                        list = new ArrayList<>();
+                    }
+                    list.add(user);
+                }
+            }
+            //Creating and executing sql statements            
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        //Closing the connection
+
+        return list;
+    }
+
+    public static List<TblUserDTO> search(String username) throws SQLException, NamingException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        List<TblUserDTO> list = null;
+        try {
+            //Connecting to a database
+            con = DBHepler.makeConnection();
+            //Creating and executing sql statements            
+            String sql = "select * from tblUser where username like ?";
+            stm = con.prepareStatement(sql);
+            stm.setString(1, "%" + username + "%");
+            rs = stm.executeQuery();
+            //load data into list
+            //if userId and password are correct
+            while (rs.next()) {
+                TblUserDTO user = new TblUserDTO();
+                TblAccountDAO d = new TblAccountDAO();
+                user.setAccount(d.getAccount(rs.getString("username")));
+                user.setUserID(rs.getInt("userID"));
+                user.setAddress(rs.getString("address"));
+                user.setBirthday(rs.getDate("birthday"));
+                user.setPhone(rs.getString("phoneNumber"));
+                if (list == null) {
+                    list = new ArrayList<>();
+                }
+                list.add(user);
+            }
+        } finally {
+            if(rs != null){
+                rs.close();
+            }
+            if(stm != null){
+                stm.close();
+            }
+            if(con != null){
+                con.close();
+            }
+        }
+        //Closing the connection
+        return list;
+    }
 }

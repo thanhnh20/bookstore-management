@@ -51,7 +51,6 @@ public class UserSearchBookServlet extends HttpServlet {
         if (!srange.isEmpty()) {
             range = Integer.parseInt(srange);
         }
-        HttpSession session = request.getSession(false);
         String url = LOGIN_PAGE;
         try {
             TblBookDAO bookDAO = new TblBookDAO();
@@ -80,11 +79,13 @@ public class UserSearchBookServlet extends HttpServlet {
                     listSearch.add(dto);
                 }
             }
-
+            
+            int numberBook = listBook.size();
             int numberResult = listSearch.size();
 
             url = USER_PAGE;
             request.setAttribute("rangeSelected", range);
+            request.setAttribute("NUMBER_BOOK", numberBook);
             request.setAttribute("NUMBER_RESULT", numberResult);
             request.setAttribute("LIST_BOOK", listSearch);
             RequestDispatcher rd = request.getRequestDispatcher(url);
