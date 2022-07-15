@@ -21,12 +21,12 @@ import javax.naming.NamingException;
  */
 public class TblBookDAO implements Serializable {
 
-    private static final String SEARCH_BOOK_BY_NAME = " Select bookID, bookName, imagePath, quantity, price, status From tblBook Where bookName like ?";
-    private static final String DELETE_BOOK = " DELETE tblBook Where bookID = ? ";
-    private static final String UPDATE_BOOK = " Update tblBook Set bookName = ?, imagePath = ?, quantity = ?, price = ? Where bookID = ?";
-    private static final String CHECK_DUPLICATE_BOOKID = " Select bookID From tblBook Where bookID = ?";
-    private static final String INSERT_BOOK = " Insert Into tblBook(bookID, bookName, imagePath, quantity, price, status) Values (?,?,?,?,?,?)";
-    private static final String SHOW_ALL_BOOK_BY_NAME = " Select bookID, bookName, imagePath, quantity, price, status From tblBook ";
+    private final String SEARCH_BOOK_BY_NAME = " Select bookID, bookName, imagePath, quantity, price, status From tblBook Where bookName like ?";
+    private final String DELETE_BOOK = " DELETE tblBook Where bookID = ? ";
+    private final String UPDATE_BOOK = " Update tblBook Set bookName = ?, imagePath = ?, quantity = ?, price = ? Where bookID = ?";
+    private final String CHECK_DUPLICATE_BOOKID = " Select bookID From tblBook Where bookID = ?";
+    private final String INSERT_BOOK = " Insert Into tblBook(bookID, bookName, imagePath, quantity, price, status) Values (?,?,?,?,?,?)";
+    private final String SHOW_ALL_BOOK_BY_NAME = " Select bookID, bookName, imagePath, quantity, price, status From tblBook ";
 
     public List<TblBookDTO> searchBookByName(String searchBookName)
             throws SQLException, NamingException {

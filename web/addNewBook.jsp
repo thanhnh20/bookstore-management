@@ -73,7 +73,7 @@
                     </c:if>
                 </div>
                 <div class="form-floating">
-                    <input required type="text" name="txtQuantity" value="${param.txtQuantity}" class="form-control" id="formInputQuantity" placeholder="input">
+                    <input required type="text" name="txtQuantity" pattern="[0-9]+" value="${param.txtQuantity}" class="form-control" id="formInputQuantity" placeholder="input">
                     <label for="formInputQuantity">*Quantity</label>
                 </div>
                 <div class="error text-danger text-left">
@@ -83,7 +83,7 @@
                 </div>
 
                 <div class="form-floating">
-                    <input required type="text" name="txtPrice" value="${param.txtPrice}" class="form-control" id="formInputPrice" placeholder="input">
+                    <input required type="text" name="txtPrice" pattern="[0-9]+" value="${param.txtPrice}" class="form-control" id="formInputPrice" placeholder="input">
                     <label for="formInputPrice">*Price</label>
                 </div>
                 <div class="error text-danger text-left">

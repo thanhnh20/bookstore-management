@@ -91,10 +91,10 @@
                                     <input class="form-control text-center" type="text" name="txtBookName" value="${bookDTO.bookName}"<%--value="<%=listBook.getBookName()%>"--%>/>
                                 </td>
                                 <td>
-                                    <input class="form-control text-center" style="width: 80px; margin: auto"  type="number" name="txtQuantity" value="${bookDTO.quantity}" <%--value="<%=listBook.getQuantity()%>"--%> />
+                                    <input class="form-control text-center" style="width: 80px; margin: auto"  type="number" pattern="[0-9]+" name="txtQuantity" value="${bookDTO.quantity}" <%--value="<%=listBook.getQuantity()%>"--%> />
                                 </td>
                                 <td>
-                                    <input class="form-control text-center" style="width: 80px; margin: auto"  type="number" step="any" name="txtPrice" value="${bookDTO.price}" <%--value="<%=listBook.getPrice()%>"--%> />
+                                    <input class="form-control text-center" style="width: 80px; margin: auto"  type="number" pattern="[0-9]+" step="any" name="txtPrice" value="${bookDTO.price}" <%--value="<%=listBook.getPrice()%>"--%> />
                                 </td>
                                 <td>
                                     <%--=listBook.isStatus()--%>
@@ -147,7 +147,7 @@
                     request.setAttribute("LIST_BOOK", list);
         --%> 
         <div style="margin: 20px 0 50px">
-            <a class="btn btn-outline-primary" href="addNewBook.jsp">Add New Book</a>
+            <a class="btn btn-outline-primary" href="addNewBook.html">Add New Book</a>
             <!--            <form action="addNewBook.jsp">
                             <button class="btn btn-outline-primary">
                                 Add New Book
