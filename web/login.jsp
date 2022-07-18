@@ -24,7 +24,12 @@
                     <img src="image/Pngtre.png" alt="" class="image"><br>
                 </a>
             </div>
-            
+            <c:set var="msg" value="${requestScope.MSG}"/>
+            <c:if test="${not empty msg}">
+                <h5 class="text-success">
+                    ${msg}
+                </h5>
+            </c:if>
             <form action="DispatchController" method="POST">
                 <div class="error text-danger text-left">
                     <c:set var="error" value="${requestScope.ERROR}"/>

@@ -54,9 +54,15 @@
             </a>
         </c:if>
         <c:set var="msg" value="${requestScope.MSG}"/>
+        <c:set var="msgError" value="${requestScope.MSG_ERROR}"/>
         <c:if test="${not empty msg}">
             <h5 style="margin: 20px" class="text-success">
                 ${msg}         
+            </h5>
+        </c:if>
+        <c:if test="${not empty msgError}">
+            <h5 style="margin: 20px" class="text-danger">
+                ${msgError}         
             </h5>
         </c:if>
         <c:if test="${not empty list}">
@@ -71,7 +77,7 @@
                             <th>Price</th>
                             <th>Status</th>
                             <th>Image Path</th>
-                            <th colspan="2">Action</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -91,22 +97,42 @@
                                     ${bookDTO.bookID}
                                 </td>
                                 <td>
-                                    <input class="form-control text-center" type="text" name="txtBookName" value="${bookDTO.bookName}"<%--value="<%=listBook.getBookName()%>"--%>/>
+                                    <input class="form-control text-center" required type="text" name="txtBookName" value="${bookDTO.bookName}"<%--value="<%=listBook.getBookName()%>"--%>/>
                                 </td>
                                 <td>
-                                    <input class="form-control text-center" style="width: 80px; margin: auto"  type="number" pattern="[0-9]+" name="txtQuantity" value="${bookDTO.quantity}" <%--value="<%=listBook.getQuantity()%>"--%> />
+                                    <input class="form-control text-center" required style="width: 80px; margin: auto"  type="text" pattern="[0-9]+" name="txtQuantity" value="${bookDTO.quantity}" <%--value="<%=listBook.getQuantity()%>"--%> />
                                 </td>
                                 <td>
-                                    <input class="form-control text-center" style="width: 80px; margin: auto"  type="number" pattern="[0-9]+" step="any" name="txtPrice" value="${bookDTO.price}" <%--value="<%=listBook.getPrice()%>"--%> />
+                                    <input class="form-control text-center" required style="width: 80px; margin: auto"  type="text" pattern="[0-9]+" step="any" name="txtPrice" value="${bookDTO.price}" <%--value="<%=listBook.getPrice()%>"--%> />
                                 </td>
                                 <td>
-                                    <%--=listBook.isStatus()--%>
+                                    <%--=listBook.isStatus()
                                     <c:if test="${bookDTO.status eq 'true'}">
                                         <font color="Green">Ready</font>
                                     </c:if>
                                     <c:if test="${bookDTO.status eq 'false'}">
                                         <font color="red">Not Ready</font>
                                     </c:if>
+                                    --%>
+                                    <select name="status" class="form-control text-center btn <c:if test="${bookDTO.status eq 'false'}">
+                                            btn-danger
+                                        </c:if>
+                                        <c:if test="${bookDTO.status eq 'true'}">
+                                            btn-success
+                                        </c:if>" aria-label="Default select example">
+                                        <option class="btn btn-success" <c:if test="${bookDTO.status eq 'true'}">
+                                                selected
+                                            </c:if>
+                                            value="true">
+                                            Ready
+                                        </option>
+                                        <option class="btn btn-danger" <c:if test="${bookDTO.status eq 'false'}">
+                                                selected
+                                            </c:if>
+                                            value="false">
+                                            Not ready
+                                        </option>
+                                    </select>
                                 </td>
                                 <td>
                                     <%--<a class="link-action link-secondary" href="<%= listBook.getImagePath() %>">Click here</a> --%>
@@ -115,12 +141,12 @@
                                 <td>
                                     <input type="hidden" name="searchValue" value="${requestScope.searchValue}"/>
                                     <input type="hidden" name="txtBookID" value="${bookDTO.bookID}" <%--value="<%=listBook.getBookID()%>"--%> />
-                                    <input class="btn btn-success" type="submit" name="btnAction" value="UpdateBook" />      
+                                    <input class="btn btn-outline-primary" type="submit" name="btnAction" value="UpdateBook" />      
 
                                 </td>
-                                <td>                                   
-                                    <a class="btn btn-success" style="color: #FF2A00" href="DispatchController?btnAction=DeleteBook&txtBookID=${bookDTO.bookID}&searchValue=${requestScope.searchValue}">Delete</a>
-                                </td>
+                                <!--                                <td>                                   
+                                                                    <a class="btn btn-success" style="color: #FF2A00" href="DispatchController?btnAction=DeleteBook&txtBookID=${bookDTO.bookID}&searchValue=${requestScope.searchValue}">Delete</a>
+                                                                </td>-->
                                 <!--                                <td>
                                 <%--<a class="btn btn-danger" href="DispatchController?btnAction=DeleteBook&txtBookID=<%=listBook.getBookID()%>&searchValue=${requestScope.searchValue}">Delete</a> 
                                 <c:url var="url" value="DispatchController">

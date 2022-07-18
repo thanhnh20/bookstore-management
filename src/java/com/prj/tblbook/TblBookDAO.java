@@ -23,7 +23,7 @@ public class TblBookDAO implements Serializable {
 
     private final String SEARCH_BOOK_BY_NAME = " Select bookID, bookName, imagePath, quantity, price, status From tblBook Where bookName like ?";
     private final String UPDATE_STATUS_BOOK = " Update tblBook Set status = 0 Where bookID = ?";
-    private final String UPDATE_BOOK = " Update tblBook Set bookName = ?, imagePath = ?, quantity = ?, price = ? Where bookID = ?";
+    private final String UPDATE_BOOK = " Update tblBook Set bookName = ?, imagePath = ?, quantity = ?, price = ?, status = ? Where bookID = ?";
     private final String CHECK_DUPLICATE_BOOKID = " Select bookID From tblBook Where bookID = ?";
     private final String INSERT_BOOK = " Insert Into tblBook(bookID, bookName, imagePath, quantity, price, status) Values (?,?,?,?,?,?)";
     private final String SHOW_ALL_BOOK_BY_NAME = " Select bookID, bookName, imagePath, quantity, price, status From tblBook ";
@@ -105,7 +105,8 @@ public class TblBookDAO implements Serializable {
                 stm.setString(2, dtoBook.getImagePath());
                 stm.setInt(3, dtoBook.getQuantity());
                 stm.setDouble(4, dtoBook.getPrice());
-                stm.setString(5, dtoBook.getBookID());
+                stm.setBoolean(5, dtoBook.isStatus());
+                stm.setString(6, dtoBook.getBookID());
                 check = stm.executeUpdate() > 0;
             }
         } finally {

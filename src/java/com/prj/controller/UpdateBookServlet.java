@@ -27,6 +27,7 @@ public class UpdateBookServlet extends HttpServlet {
     private final String LOGIN_PAGE = "login.jsp";
     private final String ERROR = "SearchBookServlet";
     private final String SUCCESS = "SearchBookServlet";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -50,21 +51,28 @@ public class UpdateBookServlet extends HttpServlet {
                     String imagePath = request.getParameter("txtImagePath");
                     int quantity = Integer.parseInt(request.getParameter("txtQuantity"));
                     double price = Double.parseDouble(request.getParameter("txtPrice"));
-
+                    boolean status = Boolean.parseBoolean(request.getParameter("status"));
                     TblBookDAO daoBook = new TblBookDAO();
-                    TblBookDTO dtoBook = new TblBookDTO();
-                    dtoBook.setBookID(bookID);
-                    dtoBook.setBookName(bookName);
-                    dtoBook.setImagePath(imagePath);
-                    dtoBook.setQuantity(quantity);
-                    dtoBook.setPrice(price);
-                    boolean check = daoBook.updateBook(dtoBook);
-                    if (check) {
-                        String msg = "You have successfully updated";
-                        request.setAttribute("MSG", msg);
-                        url = SUCCESS;
-                        request.getRequestDispatcher(url).forward(request, response);
+                    TblBookDTO bookCheck = daoBook.GetBookByBookID(bookID);
+                    if (bookCheck.getQuantity() == 0 && quantity == 0 && status) {
+                        String msgError = "The quantity need greater than 0 ";
+                        request.setAttribute("MSG_ERROR", msgError);
+                    } else {
+                        TblBookDTO dtoBook = new TblBookDTO();
+                        dtoBook.setBookID(bookID);
+                        dtoBook.setBookName(bookName);
+                        dtoBook.setImagePath(imagePath);
+                        dtoBook.setQuantity(quantity);
+                        dtoBook.setPrice(price);
+                        dtoBook.setStatus(status);
+                        boolean check = daoBook.updateBook(dtoBook);
+                        if (check) {
+                            String msg = "You have successfully updated";
+                            request.setAttribute("MSG", msg);
+                        }
                     }
+                    url = SUCCESS;
+                    request.getRequestDispatcher(url).forward(request, response);
                 }
             } else {
                 response.sendRedirect(url);

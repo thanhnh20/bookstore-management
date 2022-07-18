@@ -91,6 +91,8 @@ public class RegisterServlet extends HttpServlet {
                 //TblAccountDAO accountdao = new TblAccountDAO();
                 boolean result = accountdao.createAcount(accountdto);
                 if (result) {
+                    String msg = "Successful account registration, login now";
+                    request.setAttribute("MSG", msg);
                     url = LOGIN_PAGE;
                     RequestDispatcher rd = request.getRequestDispatcher(url);
                     rd.forward(request, response);
