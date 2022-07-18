@@ -103,7 +103,7 @@
                                     <input class="form-control text-center" required style="width: 80px; margin: auto"  type="text" pattern="[0-9]+" name="txtQuantity" value="${bookDTO.quantity}" <%--value="<%=listBook.getQuantity()%>"--%> />
                                 </td>
                                 <td>
-                                    <input class="form-control text-center" required style="width: 80px; margin: auto"  type="text" pattern="[0-9]+" step="any" name="txtPrice" value="${bookDTO.price}" <%--value="<%=listBook.getPrice()%>"--%> />
+                                    <input class="form-control text-center" required style="width: 80px; margin: auto"  type="number" pattern="[0-9]+" step="any" name="txtPrice" value="${bookDTO.price}" <%--value="<%=listBook.getPrice()%>"--%> />
                                 </td>
                                 <td>
                                     <%--=listBook.isStatus()
