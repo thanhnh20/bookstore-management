@@ -64,7 +64,7 @@ public class UserUpdateProfileServlet extends HttpServlet {
                     //get Date Now
                     LocalDate today = LocalDate.now();
                     DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                    String nowDate = format.format(today);
+                    String nowDate = format.format(today);  
                     //Check date update
                     if (date.compareTo(nowDate) > 0) {
                         error.setErrorDateInvalid("Your birthDay is illegal");
@@ -120,8 +120,6 @@ public class UserUpdateProfileServlet extends HttpServlet {
             url = SHOW_USER_PROFILE_CONTROLLER;
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
-        } finally {
-
         }
     }
 

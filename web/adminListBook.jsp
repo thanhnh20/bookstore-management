@@ -118,13 +118,14 @@
                                     <input class="btn btn-success" type="submit" name="btnAction" value="UpdateBook" />      
                                 </td>
                                 <!--                                <td>
-                                <%--<a class="btn btn-danger" href="DispatchController?btnAction=DeleteBook&txtBookID=<%=listBook.getBookID()%>&searchValue=${requestScope.searchValue}">Delete</a> --%>
+                                <%--<a class="btn btn-danger" href="DispatchController?btnAction=DeleteBook&txtBookID=<%=listBook.getBookID()%>&searchValue=${requestScope.searchValue}">Delete</a> 
                                 <c:url var="url" value="DispatchController">
                                     <c:param name="btnAction" value="DeleteBook"/>
                                     <c:param name="txtBookID" value="${bookDTO.bookID}"/>
                                     <c:param name="searchValue" value="${param.searchValue}"/>
                                 </c:url>
                                 <a class="btn btn-danger" href="${url}">Delete</a>
+                                --%>
                             </td>                                       -->
 
                             </tr>
