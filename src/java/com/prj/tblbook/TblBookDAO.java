@@ -22,12 +22,39 @@ import javax.naming.NamingException;
 public class TblBookDAO implements Serializable {
 
     private final String SEARCH_BOOK_BY_NAME = " Select bookID, bookName, imagePath, quantity, price, status From tblBook Where bookName like ?";
-    private final String DELETE_BOOK = " DELETE tblBook Where bookID = ? ";
+    private final String UPDATE_STATUS_BOOK = " Update tblBook Set status = 0 Where bookID = ?";
     private final String UPDATE_BOOK = " Update tblBook Set bookName = ?, imagePath = ?, quantity = ?, price = ? Where bookID = ?";
     private final String CHECK_DUPLICATE_BOOKID = " Select bookID From tblBook Where bookID = ?";
     private final String INSERT_BOOK = " Insert Into tblBook(bookID, bookName, imagePath, quantity, price, status) Values (?,?,?,?,?,?)";
     private final String SHOW_ALL_BOOK_BY_NAME = " Select bookID, bookName, imagePath, quantity, price, status From tblBook ";
 
+    public boolean updateStatusBook(String bookID)
+            throws SQLException, NamingException {
+        boolean check = false;
+        Connection con = null;
+        PreparedStatement stm = null;
+        try {
+            con = DBHepler.makeConnection();
+            if (con != null) {
+                String sql = "Update tblBook "
+                        + " Set status = 0 "
+                        + " Where bookID = ?";
+                stm = con.prepareStatement(sql);
+                stm = con.prepareStatement(UPDATE_STATUS_BOOK);
+                stm.setString(1, bookID);
+                check = stm.executeUpdate() > 0;
+            }
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return check;
+    }
+    
     public List<TblBookDTO> searchBookByName(String searchBookName)
             throws SQLException, NamingException {
         Connection con = null;
@@ -63,29 +90,6 @@ public class TblBookDAO implements Serializable {
 
         }
         return listBook;
-    }
-
-    public boolean deleteBook(String bookID)
-            throws SQLException, NamingException {
-        boolean check = false;
-        Connection con = null;
-        PreparedStatement stm = null;
-        try {
-            con = DBHepler.makeConnection();
-            if (con != null) {
-                stm = con.prepareStatement(DELETE_BOOK);
-                stm.setString(1, bookID);
-                check = stm.executeUpdate() > 0;
-            }
-        } finally {
-            if (stm != null) {
-                stm.close();
-            }
-            if (con != null) {
-                con.close();
-            }
-        }
-        return check;
     }
 
     public boolean updateBook(TblBookDTO dtoBook)

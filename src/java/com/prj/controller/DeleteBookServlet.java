@@ -42,7 +42,7 @@ public class DeleteBookServlet extends HttpServlet {
         try {
             String bookID = request.getParameter("txtBookID");
             TblBookDAO dao = new TblBookDAO();
-            boolean checkBook = dao.deleteBook(bookID);
+            boolean checkBook = dao.updateStatusBook(bookID);
             if(checkBook){
                 String msg = "You have successfully deleted";
                 request.setAttribute("MSG", msg);
